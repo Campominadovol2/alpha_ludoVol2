@@ -7,12 +7,10 @@
 
 using namespace std;
 
-
-
-
 #include "tabuleiro.h"
-#include "jogo.h"
 #include "posicao.h"
+#include "jogo.h"
+
 
 int main()
 {
@@ -26,8 +24,16 @@ int main()
     iniciarPieces(players, tabuleiro);
     printTabuleiro(tabuleiro);
 
+
+
+
     //Percorre todas as peças de um jogador e retorna a posição da peça
-    int x = posicaoPeca(players[VERDE], VERDE1);
+    cout << players[VERDE].nome <<  ", digite a peça que deseja mexer: ";
+    char opcao;
+    cin >> opcao;
+
+
+    int x = posicaoPeca(players[VERDE], opcao);
 
     //Na struct Pieces, cada peça tem sua posição de linha e coluna
     //Para obter, é só seguir os seguintes passos:

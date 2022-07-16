@@ -1,6 +1,13 @@
 #ifndef POS__H
 #define POS__H
 
+#include "tabuleiro.h"
+#include "jogo.h"
+
+char getLetra(Player p, int posicao)
+{
+    return p.piece[posicao].letra;
+}
 
 int indexOf(char str[], char ch)
 {
@@ -22,6 +29,35 @@ int posicaoPeca(Player p, char l)
         }
     }
     return -1;
+}
+
+
+int getPlayer(char letra)
+{
+    char verde[] = "ghjkGHJK";
+    char amarelo[] = "yuioYUIO";
+    char vermelho[] = "rtqwRTQW";
+    char azul[] = "bnxvNBXV";
+
+    for(int i = 0; i < 4; i++)
+    {
+        if(indexOf(verde, letra) != -1)
+        {
+            return 0;
+        }
+        if(indexOf(amarelo, letra) != -1)
+        {
+            return 1;
+        }
+        if(indexOf(vermelho, letra) != -1)
+        {
+            return 2;
+        }
+        if(indexOf(azul, letra) != -1)
+        {
+            return 3;
+        }
+    }
 }
 
 void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char tabuleiro[LINHAS][COLUNAS], Player players[])
@@ -57,33 +93,6 @@ void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char t
 
 }
 
-int getPlayer(char letra)
-{
-    char verde[] = "ghjkGHJK";
-    char amarelo[] = "yuioYUIO";
-    char vermelho[] = "rtqwRTQW";
-    char azul[] = "bnxvNBXV";
-
-    for(int i = 0; i < 4; i++)
-    {
-        if(indexOf(verde, letra) != -1)
-        {
-            return 0;
-        }
-        if(indexOf(amarelo, letra) != -1)
-        {
-            return 1;
-        }
-        if(indexOf(vermelho, letra) != -1)
-        {
-            return 2;
-        }
-        if(indexOf(azul, letra) != -1)
-        {
-            return 3;
-        }
-    }
-}
 
 
 

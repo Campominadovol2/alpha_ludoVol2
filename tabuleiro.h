@@ -24,6 +24,9 @@
 #define AZUL3 'x'
 #define AZUL4 'v'
 
+#include "posicao.h"
+#include "jogo.h"
+
 
 void iniciarTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
 

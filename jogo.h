@@ -2,6 +2,9 @@
 #ifndef JOGO__H
 #define JOGO__H
 
+#include "tabuleiro.h"
+#include "posicao.h"
+
 typedef enum Cor
 {
     VERDE,
@@ -43,6 +46,11 @@ void atualizarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
 
 void iniciarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
 {
+
+    strcpy(players[0].nome, "VERDE");
+    strcpy(players[1].nome, "AMARELO");
+    strcpy(players[2].nome, "VERMELHO");
+    strcpy(players[3].nome, "AZUL");
 
     for(int i = 0; i < 4; i++)
     {
