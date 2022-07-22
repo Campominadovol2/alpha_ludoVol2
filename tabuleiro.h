@@ -108,9 +108,6 @@ void printTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
 
             }
 
-
-
-
         }
     }
     cout << endl;

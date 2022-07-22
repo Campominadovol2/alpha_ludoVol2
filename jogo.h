@@ -15,6 +15,9 @@ typedef enum Cor
 
 typedef struct
 {
+    int coordenada;
+    int coordenadaDeSaida;
+    bool estaNaPosicaoInicial;
     int posicao_linha;
     int posicao_coluna;
     int ehTorre;
@@ -124,6 +127,23 @@ void iniciarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
     players[cor].piece[j++].posicao_coluna = 13;
 
     atualizarPieces(players, tabuleiro);
+
+    for(int j = 0; j < 4; j++)
+    {
+            players[AMARELO].piece[j].estaNaPosicaoInicial = true;
+            players[AMARELO].piece[j].coordenadaDeSaida = 3;
+
+            players[AZUL].piece[j].estaNaPosicaoInicial = true;
+            players[AZUL].piece[j].coordenadaDeSaida = 16;
+
+            players[VERMELHO].piece[j].estaNaPosicaoInicial = true;
+            players[VERMELHO].piece[j].coordenadaDeSaida = 29;
+
+            players[VERDE].piece[j].estaNaPosicaoInicial = true;
+            players[VERDE].piece[j].coordenadaDeSaida = 42;
+
+    }
+
 
 }
 
