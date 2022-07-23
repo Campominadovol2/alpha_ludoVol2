@@ -31,7 +31,23 @@ int main()
     cin >> dado;
 
     andarCasas(tabuleiro, dado, opcao, players);
+
+    while(dado != 0)
+    {
+        gotoxy(1, 20);
+
+        cin >> opcao;
+        cin >> dado;
+
+        andarCasas(tabuleiro, dado, opcao, players);
+        clrscr();
+        printTabuleiro(tabuleiro);
+
+
+    }
+
     gotoxy(1, 20);
+
 
     system("pause");
     clrscr();

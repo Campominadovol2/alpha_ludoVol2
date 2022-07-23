@@ -26,7 +26,20 @@
 
 #include "posicao.h"
 #include "jogo.h"
+/*
+void criarJogador(char nome[], Player players, int jogador, char tabuleiro[LINHAS][COLUNAS])
+{
+    for(int i = 0; i < 4; i++)
+    {
+        players[jogador].piece[j].letra = '-';
+        int x = players[jogador].piece[i].posicao_linha
+        tabuleiro[]
 
+
+
+    }
+}
+*/
 
 void iniciarTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
 

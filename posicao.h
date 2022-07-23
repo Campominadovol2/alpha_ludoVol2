@@ -4,7 +4,7 @@
 #include "tabuleiro.h"
 #include "jogo.h"
 
-int coord[52][2] = {{1, 7},
+const int coord[][2] = {{1, 7},
                      {1, 8},
                      {1, 9},
                      //linha de cima
@@ -77,7 +77,14 @@ int coord[52][2] = {{1, 7},
                      {5, 7},
                      {4, 7},
                      {3, 7},
-                     {2, 7}};
+                     {2, 7},
+
+                    { 2, 8 }, {3, 8}, {4, 8}, {5, 8}, {6 , 8}, {7, 8}, {8, 8},
+                    { 8, 14}, {8, 13}, {8, 12}, {8, 11}, {8, 10}, {8, 9}, {8 , 8},
+                    { 14, 8}, {13, 8}, {12, 8}, {11, 8}, {10 , 8}, {9, 8}, {8, 8},
+                    { 8, 2}, { 8, 3}, {8, 4}, {8 , 5}, {8 , 6}, {8 , 7}, {8, 8}
+
+};
                      //primeira coluna esquerda};
 
 char getLetra(Player p, int posicao)
@@ -115,8 +122,6 @@ int getPlayer(char letra)
     char vermelho[] = "rtqwRTQW";
     char azul[] = "bnxvNBXV";
 
-    for(int i = 0; i < 4; i++)
-    {
         if(indexOf(verde, letra) != -1)
         {
             return 0;
@@ -133,7 +138,8 @@ int getPlayer(char letra)
         {
             return 3;
         }
-    }
+    return -1;
+
 }
 
 void printarQuadrado(int x, int y, int cor)
@@ -143,7 +149,7 @@ void printarQuadrado(int x, int y, int cor)
     cout << "██";
 }
 
-COLORS getColor(Cor p)
+int getColor(Cor p)
 {
     if(p == AMARELO)
         return BROWN;
@@ -154,15 +160,49 @@ COLORS getColor(Cor p)
     return RED;
 }
 
-void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char tabuleiro[LINHAS][COLUNAS], Player players[])
+void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char tabuleiro[LINHAS][COLUNAS], Player players[], bool ehUltimaVolta)
 {
 
     char temp = tabuleiro[linha][coluna];
     int p = getPlayer(temp);
+    char temp2 = tabuleiro[newLinha][newColuna];
+    if(ehUltimaVolta)
+    {
+
+        int corDoProximo = getPlayer(temp2);
+
+        if(corDoProximo != -1)
+        {
+            if(corDoProximo != getPlayer(temp))
+            {
+                int p2 = posicaoPeca(players[corDoProximo], temp2);
+                int x = players[corDoProximo].piece[p2].posicao_linha;
+                int y = players[corDoProximo].piece[p2].posicao_coluna;
+                players[corDoProximo].piece[p2].estaNaPosicaoInicial = true;
+
+                players[corDoProximo].piece[p2].coordenada = -1;
+                tabuleiro[x][y] = temp2;
+
+                textcolor( (int) getColor( (Cor)getPlayer(tabuleiro[x][y])));
+
+                gotoxy(y * 2 + 1, x);
+                cout << tabuleiro[x][y] << " ";
+            }
+
+
+
+        }
+    }
+
+
+    /*if(players[p].piece[posicaoPeca(players[p], temp2)].ehTorre)
+    {
+        return;
+    }*/
 
     tabuleiro[linha][coluna] = '-';
 
-    if(linha == 6 && coluna == 2)
+    if(linha == 7 && coluna == 2)
     {
         tabuleiro[linha][coluna] = '2';
         printarQuadrado(coluna * 2 + 1, linha, 2);
@@ -195,20 +235,40 @@ void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char t
 
     tabuleiro[newLinha][newColuna] = temp;
 
+    for(int i = 0; i < 4; i++)
+    {
+        for(int j = 0; j < 4; j++)
+        {
+            if(players[i].piece[j].coordenada != -1)
+            {
+                int x = coord[players[i].piece[j].coordenada][0];
+                int y = coord[players[i].piece[j].coordenada][1];
+
+                tabuleiro[x][y] = players[i].piece[j].letra;
+                textcolor( (int) getColor( (Cor)getPlayer(tabuleiro[x][y])));
+
+                gotoxy(y * 2 + 1, x);
+                cout << tabuleiro[x][y] << " ";
+
+            }
+
+        }
+    }
+
 }
 
 
-void andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Player players[])
+int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Player players[])
 {
     int player = getPlayer(letra);
     int peca = posicaoPeca(players[player], letra);
 
-    int linha, coluna, coordenada, novaLinha, novaColuna;
+    int coordenada, linha, coluna, novaLinha, novaColuna;
 
-    if(players[player].piece[peca].estaNaPosicaoInicial == true)
+    if(players[player].piece[peca].estaNaPosicaoInicial)
     {
         if(numDeCasas != 6)
-            return;
+            return -1;
 
         coordenada = players[player].piece[peca].coordenadaDeSaida;
         players[player].piece[peca].coordenada = coordenada;
@@ -219,35 +279,66 @@ void andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Pla
         novaLinha  = coord[coordenada][0];
         novaColuna = coord[coordenada][1];
 
-        atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players);
-        delay(500);
-        return;
+        atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players, false);
+        players[player].piece[peca].estaNaPosicaoInicial = false;
+        return - 1;
     }
 
-    linha  = coord[coordenada][0];
-    coluna = coord[coordenada][1];
-
-    novaLinha  = coord[coordenada + 1][0];
-    novaColuna = coord[coordenada + 1][1];
-
-
-    atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players);
-    delay(500);
-
-    for(int i = 1; i <= numDeCasas; i++)
+    for(int i = 0; i < numDeCasas; i++)
     {
-        players[player].piece[peca].coordenada = coordenada + i;
+        coordenada = players[player].piece[peca].coordenada;
 
-        linha =  coord[coordenada + i - 1][0];
-        coluna = coord[coordenada + i - 1][1];
+        if(coordenada == players[player].piece[peca].coordenadaDeEntrada)
+        {
 
-        novaLinha  = coord[coordenada + i][0];
-        novaColuna = coord[coordenada + i][1];
+            linha  = coord[coordenada][0];
+            coluna = coord[coordenada][1];
 
-        atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players);
-        delay(500);
+            coordenada = players[player].piece[peca].primeiraCasaDeCor;
 
+            novaLinha  = coord[coordenada][0];
+            novaColuna = coord[coordenada][1];
+
+            players[player].piece[peca].coordenada = coordenada;
+
+        }
+
+        else if(coordenada == 51)
+        {
+
+            linha  = coord[coordenada][0];
+            coluna = coord[coordenada][1];
+
+            coordenada = 0;
+
+            novaLinha  = coord[coordenada][0];
+            novaColuna = coord[coordenada][1];
+
+            players[player].piece[peca].coordenada = coordenada;
+        }
+        else
+        {
+            linha  = coord[coordenada][0];
+            coluna = coord[coordenada][1];
+
+            novaLinha  = coord[coordenada + 1][0];
+            novaColuna = coord[coordenada + 1][1];
+
+            players[player].piece[peca].coordenada = coordenada + 1;
+
+        }
+
+        atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players, i + 1 == numDeCasas);
+
+        if(novaColuna == 8 && novaLinha == 8)
+        {
+            return 1;
+        }
+        delay(100);
     }
+
+    return 0;
+
 }
 
 

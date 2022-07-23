@@ -17,6 +17,8 @@ typedef struct
 {
     int coordenada;
     int coordenadaDeSaida;
+    int coordenadaDeEntrada;
+    int primeiraCasaDeCor;
     bool estaNaPosicaoInicial;
     int posicao_linha;
     int posicao_coluna;
@@ -50,10 +52,10 @@ void atualizarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
 void iniciarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
 {
 
-    strcpy(players[0].nome, "VERDE");
-    strcpy(players[1].nome, "AMARELO");
-    strcpy(players[2].nome, "VERMELHO");
-    strcpy(players[3].nome, "AZUL");
+    strcpy_s(players[0].nome, "VERDE");
+    strcpy_s(players[1].nome, "AMARELO");
+    strcpy_s(players[2].nome, "VERMELHO");
+    strcpy_s(players[3].nome, "AZUL");
 
     for(int i = 0; i < 4; i++)
     {
@@ -63,6 +65,7 @@ void iniciarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
            players[i].piece[j].ehTorre = 0;
            players[i].piece[j].cor = (Cor) i;
            players[i].piece[j].ID = j;
+           players[i].piece[j].coordenada = -1;
 
        }
     }
@@ -132,15 +135,24 @@ void iniciarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
     {
             players[AMARELO].piece[j].estaNaPosicaoInicial = true;
             players[AMARELO].piece[j].coordenadaDeSaida = 3;
+            players[AMARELO].piece[j].coordenadaDeEntrada = 1;
+            players[AMARELO].piece[j].primeiraCasaDeCor = 52;
+
 
             players[AZUL].piece[j].estaNaPosicaoInicial = true;
             players[AZUL].piece[j].coordenadaDeSaida = 16;
+            players[AZUL].piece[j].coordenadaDeEntrada = 14;
+            players[AZUL].piece[j].primeiraCasaDeCor = 60;
 
             players[VERMELHO].piece[j].estaNaPosicaoInicial = true;
             players[VERMELHO].piece[j].coordenadaDeSaida = 29;
+            players[VERMELHO].piece[j].coordenadaDeEntrada = 27;
+            players[VERMELHO].piece[j].primeiraCasaDeCor = 68;
 
             players[VERDE].piece[j].estaNaPosicaoInicial = true;
             players[VERDE].piece[j].coordenadaDeSaida = 42;
+            players[VERDE].piece[j].coordenadaDeEntrada = 40;
+            players[VERDE].piece[j].primeiraCasaDeCor = 76;
 
     }
 
