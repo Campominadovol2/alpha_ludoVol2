@@ -5,11 +5,15 @@
 #include <cstdlib>
 #include <cctype>
 
+#define DELAY 0
+
 using namespace std;
 
 #include "tabuleiro.h"
 #include "posicao.h"
 #include "jogo.h"
+
+
 
 
 int main()
@@ -22,6 +26,10 @@ int main()
 
     iniciarTabuleiro(tabuleiro);
     iniciarPieces(players, tabuleiro);
+
+    /*removerJogador(players[VERDE], tabuleiro);
+    removerJogador(players[AZUL], tabuleiro);*/
+
     printTabuleiro(tabuleiro);
 
     char opcao;
@@ -40,21 +48,8 @@ int main()
         cin >> dado;
 
         andarCasas(tabuleiro, dado, opcao, players);
-        clrscr();
-        printTabuleiro(tabuleiro);
-
 
     }
-
-    gotoxy(1, 20);
-
-
-    system("pause");
-    clrscr();
-    printTabuleiro(tabuleiro);
-
-
-    gotoxy(1, 25);
 
     return 0;
 }

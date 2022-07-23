@@ -22,7 +22,7 @@ typedef struct
     bool estaNaPosicaoInicial;
     int posicao_linha;
     int posicao_coluna;
-    int ehTorre;
+    bool ehTorre;
     Cor cor;
     int ID;
     char letra;
@@ -142,17 +142,17 @@ void iniciarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
             players[AZUL].piece[j].estaNaPosicaoInicial = true;
             players[AZUL].piece[j].coordenadaDeSaida = 16;
             players[AZUL].piece[j].coordenadaDeEntrada = 14;
-            players[AZUL].piece[j].primeiraCasaDeCor = 60;
+            players[AZUL].piece[j].primeiraCasaDeCor = 59;
 
             players[VERMELHO].piece[j].estaNaPosicaoInicial = true;
             players[VERMELHO].piece[j].coordenadaDeSaida = 29;
             players[VERMELHO].piece[j].coordenadaDeEntrada = 27;
-            players[VERMELHO].piece[j].primeiraCasaDeCor = 68;
+            players[VERMELHO].piece[j].primeiraCasaDeCor = 66;
 
             players[VERDE].piece[j].estaNaPosicaoInicial = true;
             players[VERDE].piece[j].coordenadaDeSaida = 42;
             players[VERDE].piece[j].coordenadaDeEntrada = 40;
-            players[VERDE].piece[j].primeiraCasaDeCor = 76;
+            players[VERDE].piece[j].primeiraCasaDeCor = 73;
 
     }
 

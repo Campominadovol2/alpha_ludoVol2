@@ -4,42 +4,22 @@
 #define LINHAS 17
 #define COLUNAS 18
 
-#define VERDE1 'g'
-#define VERDE2 'h'
-#define VERDE3 'j'
-#define VERDE4 'k'
-
-#define AMARELO1 'y'
-#define AMALERO2 'u'
-#define AMARELO3 'i'
-#define AMALERO4 'o'
-
-#define VERMELHO1 'r'
-#define VERMELHO2 't'
-#define VERMELHO3 'w'
-#define VERMELHO4 'q'
-
-#define AZUL1 'b'
-#define AZUL2 'n'
-#define AZUL3 'x'
-#define AZUL4 'v'
-
 #include "posicao.h"
 #include "jogo.h"
-/*
-void criarJogador(char nome[], Player players, int jogador, char tabuleiro[LINHAS][COLUNAS])
+
+void removerJogador(Player & p, char tabuleiro[LINHAS][COLUNAS])
 {
     for(int i = 0; i < 4; i++)
     {
-        players[jogador].piece[j].letra = '-';
-        int x = players[jogador].piece[i].posicao_linha
-        tabuleiro[]
+        p.piece[i].letra = '-';
 
+        int x = p.piece[i].posicao_linha;
+        int y = p.piece[i].posicao_coluna;
 
-
+        tabuleiro[x][y] = '-';
     }
 }
-*/
+
 
 void iniciarTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
 

@@ -202,22 +202,22 @@ void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char t
 
     tabuleiro[linha][coluna] = '-';
 
-    if(linha == 7 && coluna == 2)
+    if((linha == 7 && coluna == 2) || (coluna >= 2 && coluna < 8 && linha == 8))
     {
         tabuleiro[linha][coluna] = '2';
         printarQuadrado(coluna * 2 + 1, linha, 2);
     }
-    else if(linha == 9 && coluna == 14)
+    else if((linha == 9 && coluna == 14) || (coluna <= 14 && coluna > 8 && linha == 8))
     {
         tabuleiro[linha][coluna] = '1';
         printarQuadrado(coluna * 2 + 1, linha, 1);
     }
-    else if(linha == 14 && coluna == 7)
+    else if((linha == 14 && coluna == 7) || (linha <= 14 && linha > 8 && coluna == 8))
     {
         tabuleiro[linha][coluna] = '4';
         printarQuadrado(coluna * 2+ 1, linha, 4);
     }
-    else if(linha == 2 && coluna == 9)
+    else if((linha == 2 && coluna == 9) || (linha <= 7 && linha >= 2 && coluna == 8))
     {
         tabuleiro[linha][coluna] = '6';
         printarQuadrado(coluna * 2 + 1, linha, 6);
@@ -328,13 +328,14 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
 
         }
 
+
         atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players, i + 1 == numDeCasas);
 
         if(novaColuna == 8 && novaLinha == 8)
         {
             return 1;
         }
-        delay(100);
+        delay(DELAY);
     }
 
     return 0;
