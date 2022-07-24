@@ -3,8 +3,9 @@
 
 #include "tabuleiro.h"
 #include "jogo.h"
+#include "auxiliares.h"
 
-const int coord[][2] = {{1, 7},
+static const int coord[][2] = {{1, 7},
                      {1, 8},
                      {1, 9},
                      //linha de cima
@@ -92,57 +93,7 @@ char getLetra(Player p, int posicao)
     return p.piece[posicao].letra;
 }
 
-int indexOf(char str[], char ch)
-{
-    for(int i = 0; i < strlen(str); i++)
-    {
-        if(str[i] == ch)
-            return i;
-    }
-    return -1;
-}
-
-int posicaoPeca(Player p, char l)
-{
-    for(int i = 0; i < 4; i++)
-    {
-        if(p.piece[i].letra == l)
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
-
-int getPlayer(char letra)
-{
-    char verde[] = "ghjkGHJK";
-    char amarelo[] = "yuioYUIO";
-    char vermelho[] = "rtqwRTQW";
-    char azul[] = "bnxvNBXV";
-
-        if(indexOf(verde, letra) != -1)
-        {
-            return 0;
-        }
-        if(indexOf(amarelo, letra) != -1)
-        {
-            return 1;
-        }
-        if(indexOf(vermelho, letra) != -1)
-        {
-            return 2;
-        }
-        if(indexOf(azul, letra) != -1)
-        {
-            return 3;
-        }
-    return -1;
-
-}
-
-void printarQuadrado(int x, int y, int cor)
+static void printarQuadrado(int x, int y, int cor)
 {
     textcolor(cor);
     gotoxy(x, y);
@@ -160,7 +111,7 @@ int getColor(Cor p)
     return RED;
 }
 
-void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char tabuleiro[LINHAS][COLUNAS], Player players[], bool ehUltimaVolta)
+static void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char tabuleiro[LINHAS][COLUNAS], Player players[], bool ehUltimaVolta)
 {
 
     char temp = tabuleiro[linha][coluna];
@@ -281,7 +232,7 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
 
         atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players, false);
         players[player].piece[peca].estaNaPosicaoInicial = false;
-        return - 1;
+        return 0;
     }
 
     for(int i = 0; i < numDeCasas; i++)

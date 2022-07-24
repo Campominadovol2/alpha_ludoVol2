@@ -5,6 +5,7 @@
 #include "tabuleiro.h"
 #include "posicao.h"
 
+
 typedef enum Cor
 {
     VERDE,
@@ -24,7 +25,6 @@ typedef struct
     int posicao_coluna;
     bool ehTorre;
     Cor cor;
-    int ID;
     char letra;
 
 }Piece; //Peça
@@ -37,7 +37,7 @@ typedef struct
 
 }Player;
 
-void atualizarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
+static void atualizarLetrasPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
 {
     for(int i = 0; i < 4; i++)
     {
@@ -64,7 +64,6 @@ void iniciarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
        {
            players[i].piece[j].ehTorre = 0;
            players[i].piece[j].cor = (Cor) i;
-           players[i].piece[j].ID = j;
            players[i].piece[j].coordenada = -1;
 
        }
@@ -129,7 +128,7 @@ void iniciarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
     players[cor].piece[j++].posicao_coluna = 12;
     players[cor].piece[j++].posicao_coluna = 13;
 
-    atualizarPieces(players, tabuleiro);
+    atualizarLetrasPieces(players, tabuleiro);
 
     for(int j = 0; j < 4; j++)
     {

@@ -26,7 +26,6 @@ void iniciarTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
 
     FILE * file = fopen("tabuleiro.txt", "r");
 
-
     for(int i = 0; i < LINHAS; i++)
     {
         for(int j = 0; j < COLUNAS; j++){
@@ -35,11 +34,8 @@ void iniciarTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
     }
 
     fclose(file);
-
-
-
-
 }
+
 void printTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
     cout << " ";
     for(int i = 0; i < LINHAS; i++){
