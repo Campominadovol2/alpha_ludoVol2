@@ -55,24 +55,38 @@ int main()
 
     printTabuleiro(tabuleiro);
 
+    int dado = 1;
     char opcao;
-    cin >> opcao;
 
-    int dado;
-    cin >> dado;
+    int vezDe = VERDE;
 
-    andarCasas(tabuleiro, dado, opcao, players);
-
-    while(dado != 0)
+    while(dado)
     {
-        gotoxy(1, 20);
 
+        gotoxy(50, 1);
+        cout << players[0].nome << ": ";
+        gotoxy(50, 2);
         cin >> opcao;
+
+        gotoxy(50, 2);
         cin >> dado;
 
-        andarCasas(tabuleiro, dado, opcao, players);
+
+
+
+        andarCasas(tabuleiro, dado, tolower(opcao), players);
+
+        if(vezDe == VERMELHO)
+            vezDe = VERDE;
+        else
+        {
+            vezDe++;
+        }
+
 
     }
+
+    printTabuleiro(tabuleiro);
 
     return 0;
 }
