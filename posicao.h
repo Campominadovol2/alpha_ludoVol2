@@ -5,6 +5,11 @@
 #include "jogo.h"
 #include "auxiliares.h"
 
+#define STAR1 11
+#define STAR2 24
+#define STAR3 37
+#define STAR4 50
+
 static const int coord[][2] = {{1, 7},
                      {1, 8},
                      {1, 9},
@@ -93,6 +98,33 @@ char getLetra(Player p, int posicao)
     return p.piece[posicao].letra;
 }
 
+///Recebe o jogador e uma letra e retorna a letra que está na mesma casa que char l
+///Caso não tenha, retorna um espaço em branco
+void atualizarSobreposicao(Player & p, char l)
+{
+
+    for(int i = 0; i < 4; i++)
+    {
+        if(p.piece[i].ehTorre)
+        {
+            for(int j = 0; j < 4; j++)
+                if(p.piece[i].coordenada != p.piece[j].coordenada && i != j)
+                {
+                    p.piece[i].ehTorre = false;
+                    p.piece[j].ehTorre = false;
+                }
+                else
+                {
+                    p.piece[i].ehTorre = true;
+                    p.piece[j].ehTorre = true;
+                }
+        }
+
+    }
+
+}
+
+
 static void printarQuadrado(int x, int y, int cor)
 {
     textcolor(cor);
@@ -111,49 +143,108 @@ int getColor(Cor p)
     return RED;
 }
 
+void atualizarMatrix(char tabuleiro[LINHAS][COLUNAS], Player players[])
+{
+    for(int i = 0; i < 4; i++)
+    {
+        for(int j = 0; j < 4; j++)
+        {
+            if(players[i].piece[j].coordenada != -1)
+            {
+                int x = coord[players[i].piece[j].coordenada][0];
+                int y = coord[players[i].piece[j].coordenada][1];
+
+                tabuleiro[x][y] = players[i].piece[j].letra;
+                textcolor( (int) getColor( (Cor)getPlayer(tabuleiro[x][y])));
+
+                gotoxy(y * 2 + 1, x);
+                cout << tabuleiro[x][y] << " ";
+
+            }
+
+        }
+    }
+}
+
+bool eh_estrela(int casa)
+{
+    return casa == STAR1 || casa == STAR2 || casa == STAR3 || casa == STAR4;
+}
+bool ehCasaEspecial(Player p[], int casa)
+{
+    for(int i = 0; i < 4; i++)
+    {
+        for(int j = 0; j < 4; j++)
+        {
+            if(p[i].piece[j].coordenadaDeSaida == casa)
+                return true;
+        }
+    }
+    return false || eh_estrela(casa);
+}
+
 static void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char tabuleiro[LINHAS][COLUNAS], Player players[], bool ehUltimaVolta)
 {
 
     char temp = tabuleiro[linha][coluna];
     int p = getPlayer(temp);
     char temp2 = tabuleiro[newLinha][newColuna];
+
+
     if(ehUltimaVolta)
     {
-
         int corDoProximo = getPlayer(temp2);
 
         if(corDoProximo != -1)
         {
             if(corDoProximo != getPlayer(temp))
             {
-                int p2 = posicaoPeca(players[corDoProximo], temp2);
-                int x = players[corDoProximo].piece[p2].posicao_linha;
-                int y = players[corDoProximo].piece[p2].posicao_coluna;
-                players[corDoProximo].piece[p2].estaNaPosicaoInicial = true;
+                int c2 = players[corDoProximo].piece[posicaoPeca(players[corDoProximo], temp2)].coordenada;
 
-                players[corDoProximo].piece[p2].coordenada = -1;
-                tabuleiro[x][y] = temp2;
+                if(!players[corDoProximo].piece[posicaoPeca(players[corDoProximo], temp2)].ehTorre && !ehCasaEspecial(players, c2))
+                {
+                    int p2 = posicaoPeca(players[corDoProximo], temp2);
+                    int x = players[corDoProximo].piece[p2].posicao_linha;
+                    int y = players[corDoProximo].piece[p2].posicao_coluna;
+                    players[corDoProximo].piece[p2].estaNaPosicaoInicial = true;
 
-                textcolor( (int) getColor( (Cor)getPlayer(tabuleiro[x][y])));
+                    players[corDoProximo].piece[p2].coordenada = -1;
+                    tabuleiro[x][y] = temp2;
 
-                gotoxy(y * 2 + 1, x);
-                cout << tabuleiro[x][y] << " ";
+                    textcolor( (int) getColor( (Cor)getPlayer(tabuleiro[x][y])));
+
+                    gotoxy(y * 2 + 1, x);
+                    cout << tabuleiro[x][y] << " ";
+
+                }
             }
-
-
+            else
+            {
+                players[p].piece[posicaoPeca(players[p], temp)].ehTorre = true;
+                players[p].piece[posicaoPeca(players[p], temp2)].ehTorre = true;
+            }
 
         }
     }
 
-
-    /*if(players[p].piece[posicaoPeca(players[p], temp2)].ehTorre)
-    {
-        return;
-    }*/
-
     tabuleiro[linha][coluna] = '-';
 
-    if((linha == 7 && coluna == 2) || (coluna >= 2 && coluna < 8 && linha == 8))
+    bool ehEstrela = false;
+    int star = STAR1;
+    for(int i = 0; i < 4; i++)
+    {
+        if(coord[star][0] == linha && coord[star][1] == coluna)
+            ehEstrela = true;
+        star += 13;
+    }
+    if(ehEstrela)
+    {
+        tabuleiro[linha][coluna] = 'x';
+        gotoxy(coluna * 2 + 1, linha);
+        textcolor(WHITE);
+        cout << "x ";
+    }
+    else if((linha == 7 && coluna == 2) || (coluna >= 2 && coluna < 8 && linha == 8))
     {
         tabuleiro[linha][coluna] = '2';
         printarQuadrado(coluna * 2 + 1, linha, 2);
@@ -185,26 +276,7 @@ static void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna,
     }
 
     tabuleiro[newLinha][newColuna] = temp;
-
-    for(int i = 0; i < 4; i++)
-    {
-        for(int j = 0; j < 4; j++)
-        {
-            if(players[i].piece[j].coordenada != -1)
-            {
-                int x = coord[players[i].piece[j].coordenada][0];
-                int y = coord[players[i].piece[j].coordenada][1];
-
-                tabuleiro[x][y] = players[i].piece[j].letra;
-                textcolor( (int) getColor( (Cor)getPlayer(tabuleiro[x][y])));
-
-                gotoxy(y * 2 + 1, x);
-                cout << tabuleiro[x][y] << " ";
-
-            }
-
-        }
-    }
+    atualizarMatrix(tabuleiro, players);
 
 }
 
@@ -213,6 +285,9 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
 {
     int player = getPlayer(letra);
     int peca = posicaoPeca(players[player], letra);
+
+    atualizarSobreposicao(players[player], letra);
+
 
     int coordenada, linha, coluna, novaLinha, novaColuna;
 

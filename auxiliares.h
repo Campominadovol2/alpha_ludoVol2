@@ -34,7 +34,7 @@ int getPlayer(char letra)
     char verde[] = "ghjkGHJK";
     char amarelo[] = "yuioYUIO";
     char vermelho[] = "rtqwRTQW";
-    char azul[] = "bnxvNBXV";
+    char azul[] = "bncvNBCV";
 
     if(indexOf(verde, letra) != -1)
     {

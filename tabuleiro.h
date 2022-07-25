@@ -56,7 +56,7 @@ void printTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
                 char verde[] = "ghjkGHJK";
                 char amarelo[] = "yuioYUIO";
                 char vermelho[] = "rtqwRTQW";
-                char azul[] = "bnxvNBXV";
+                char azul[] = "bncvNBCV";
 
                 textbackground(0);
                 textcolor(WHITE);
