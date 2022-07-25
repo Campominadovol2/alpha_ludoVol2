@@ -14,6 +14,7 @@ using namespace std;
 #include "posicao.h"
 #include "jogo.h"
 #include "auxiliares.h"
+#include "desenhos.h"
 
 
 void posicionarCursorNoMeio()
