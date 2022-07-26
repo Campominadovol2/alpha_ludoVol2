@@ -54,7 +54,7 @@ int main()
     criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO);
     criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO);
 
-
+    removerJogador(players[AZUL], tabuleiro);
 
     printTabuleiro(tabuleiro);
 

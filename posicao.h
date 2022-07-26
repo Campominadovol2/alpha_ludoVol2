@@ -143,7 +143,7 @@ int getColor(Cor p)
     return RED;
 }
 
-static void atualizarMatrix(char tabuleiro[LINHAS][COLUNAS], Player players[])
+void atualizarMatrix(char tabuleiro[LINHAS][COLUNAS], Player players[])
 {
     for(int i = 0; i < 4; i++)
     {
@@ -166,11 +166,11 @@ static void atualizarMatrix(char tabuleiro[LINHAS][COLUNAS], Player players[])
     }
 }
 
-static bool eh_estrela(int casa)
+bool eh_estrela(int casa)
 {
     return casa == STAR1 || casa == STAR2 || casa == STAR3 || casa == STAR4;
 }
-static bool ehCasaEspecial(Player p[], int casa)
+bool ehCasaEspecial(Player p[], int casa)
 {
     for(int i = 0; i < 4; i++)
     {
@@ -359,7 +359,10 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
 
         if(novaColuna == 8 && novaLinha == 8)
         {
+            players[getPlayer(letra)].piece[posicaoPeca(players[getPlayer(letra)], letra)].letra = ' ';
             players[getPlayer(letra)].pecasEmJogo--;
+            atualizarMatrix(tabuleiro, players);
+
             return 1;
         }
         delay(DELAY);
