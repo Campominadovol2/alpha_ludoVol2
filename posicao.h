@@ -155,6 +155,7 @@ void atualizarMatrix(char tabuleiro[LINHAS][COLUNAS], Player players[])
                 int y = coord[players[i].piece[j].coordenada][1];
 
                 tabuleiro[x][y] = players[i].piece[j].letra;
+
                 textcolor( (int) getColor( (Cor)getPlayer(tabuleiro[x][y])));
 
                 gotoxy(y * 2 + 1, x);
@@ -360,6 +361,7 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
         if(novaColuna == 8 && novaLinha == 8)
         {
             players[getPlayer(letra)].piece[posicaoPeca(players[getPlayer(letra)], letra)].letra = ' ';
+            players[getPlayer(letra)].piece[posicaoPeca(players[getPlayer(letra)], letra)].estaEmJogo;
             players[getPlayer(letra)].pecasEmJogo--;
             atualizarMatrix(tabuleiro, players);
 

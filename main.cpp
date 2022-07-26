@@ -49,12 +49,10 @@ int main()
 
     iniciarTabuleiro(tabuleiro);
 
-    criarJogador(players[VERDE], "VERDE", tabuleiro, VERDE);
-    criarJogador(players[AZUL], "AZUL", tabuleiro, AZUL);
-    criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO);
-    criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO);
-
-    removerJogador(players[AZUL], tabuleiro);
+    criarJogador(players[VERDE], "VERDE", tabuleiro, VERDE, true);
+    criarJogador(players[AZUL], "AZUL", tabuleiro, AZUL, true);
+    criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
+    criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO, true);
 
     printTabuleiro(tabuleiro);
 
@@ -65,13 +63,36 @@ int main()
 
     while(dado)
     {
+            gotoxy(50, 10);
+            cout << "          ";
+                    gotoxy(50, 3);
+        cout << "          ";
 
         gotoxy(50, 1);
+
+        cout << "       ";
+
+        gotoxy(50, 1);
+
         cout << players[0].nome << ": ";
+
+
+        gotoxy(50, 2);
+
+        cout << "       ";
+
         gotoxy(50, 2);
         cin >> opcao;
 
-        gotoxy(50, 2);
+        if(getPlayer(opcao) == -1 || !players[getPlayer(opcao)].piece[posicaoPeca(players[getPlayer(opcao)], opcao)].estaEmJogo)
+        {
+            gotoxy(50, 10);
+            cout << "INVALIDO";
+            continue;
+        }
+
+
+        gotoxy(50, 3);
         cin >> dado;
 
         if(andarCasas(tabuleiro, dado, tolower(opcao), players) == 1)
