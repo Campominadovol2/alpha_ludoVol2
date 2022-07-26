@@ -6,7 +6,7 @@
 #include <cctype>
 #include <windows.h>
 
-#define DELAY 150
+#define DELAY 0
 
 using namespace std;
 
@@ -14,7 +14,7 @@ using namespace std;
 #include "posicao.h"
 #include "jogo.h"
 #include "auxiliares.h"
-#include "desenhos.h"
+
 
 
 void posicionarCursorNoMeio()
@@ -48,10 +48,13 @@ int main()
     Player players[4];
 
     iniciarTabuleiro(tabuleiro);
-    iniciarPieces(players, tabuleiro);
 
-    /*removerJogador(players[VERDE], tabuleiro);
-    removerJogador(players[AZUL], tabuleiro);*/
+    criarJogador(players[VERDE], "VERDE", tabuleiro, VERDE);
+    criarJogador(players[AZUL], "AZUL", tabuleiro, AZUL);
+    criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO);
+    criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO);
+
+
 
     printTabuleiro(tabuleiro);
 
@@ -71,16 +74,13 @@ int main()
         gotoxy(50, 2);
         cin >> dado;
 
-
-
-
-        andarCasas(tabuleiro, dado, tolower(opcao), players);
-
-        if(vezDe == VERMELHO)
-            vezDe = VERDE;
-        else
+        if(andarCasas(tabuleiro, dado, tolower(opcao), players) == 1)
         {
-            vezDe++;
+            if(players[getPlayer(opcao)].pecasEmJogo == 0)
+            {
+                cout << "GANOUkkkkkk";
+                break;
+            }
         }
 
 

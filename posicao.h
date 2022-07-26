@@ -108,7 +108,7 @@ void atualizarSobreposicao(Player & p, char l)
         if(p.piece[i].ehTorre)
         {
             for(int j = 0; j < 4; j++)
-                if(p.piece[i].coordenada != p.piece[j].coordenada && i != j)
+                if(p.piece[i].coordenada != p.piece[j].coordenada && i != j || p.piece[i].estaNaPosicaoInicial)
                 {
                     p.piece[i].ehTorre = false;
                     p.piece[j].ehTorre = false;
@@ -143,7 +143,7 @@ int getColor(Cor p)
     return RED;
 }
 
-void atualizarMatrix(char tabuleiro[LINHAS][COLUNAS], Player players[])
+static void atualizarMatrix(char tabuleiro[LINHAS][COLUNAS], Player players[])
 {
     for(int i = 0; i < 4; i++)
     {
@@ -166,11 +166,11 @@ void atualizarMatrix(char tabuleiro[LINHAS][COLUNAS], Player players[])
     }
 }
 
-bool eh_estrela(int casa)
+static bool eh_estrela(int casa)
 {
     return casa == STAR1 || casa == STAR2 || casa == STAR3 || casa == STAR4;
 }
-bool ehCasaEspecial(Player p[], int casa)
+static bool ehCasaEspecial(Player p[], int casa)
 {
     for(int i = 0; i < 4; i++)
     {
@@ -359,6 +359,7 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
 
         if(novaColuna == 8 && novaLinha == 8)
         {
+            players[getPlayer(letra)].pecasEmJogo--;
             return 1;
         }
         delay(DELAY);

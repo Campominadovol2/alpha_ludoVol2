@@ -31,130 +31,149 @@ typedef struct
 
 typedef struct
 {
+    int pecasEmJogo;
     Piece piece[4];
     char nome[20];
     Cor cor;
 
 }Player;
 
-static void atualizarLetrasPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
+static void atualizarLetrasPieces(Player & p, char tabuleiro[LINHAS][COLUNAS])
 {
-    for(int i = 0; i < 4; i++)
+    for(int j = 0; j < 4; j++)
     {
-        for(int j = 0; j < 4; j++)
-        {
-            players[i].piece[j].letra = tabuleiro[players[i].piece[j].posicao_linha][players[i].piece[j].posicao_coluna];
-        }
+        p.piece[j].letra = tabuleiro[p.piece[j].posicao_linha][p.piece[j].posicao_coluna];
     }
+
 }
 
-
-void iniciarPieces(Player players[], char tabuleiro[LINHAS][COLUNAS])
+static void iniciarVerde(Player & p, char tabuleiro[LINHAS][COLUNAS])
 {
+    int j = 0;
+    p.piece[j++].posicao_linha = 3;
+    p.piece[j++].posicao_linha = 3;
+    p.piece[j++].posicao_linha = 4;
+    p.piece[j++].posicao_linha = 4;
 
-    strcpy_s(players[0].nome, "VERDE");
-    strcpy_s(players[1].nome, "AMARELO");
-    strcpy_s(players[2].nome, "VERMELHO");
-    strcpy_s(players[3].nome, "AZUL");
+    j = 0;
+    p.piece[j++].posicao_coluna = 3;
+    p.piece[j++].posicao_coluna = 4;
+    p.piece[j++].posicao_coluna = 3;
+    p.piece[j++].posicao_coluna = 4;
 
-    for(int i = 0; i < 4; i++)
+    for(j = 0; j < 4; j++)
+    {
+        p.piece[j].estaNaPosicaoInicial = true;
+        p.piece[j].coordenadaDeSaida = 42;
+        p.piece[j].coordenadaDeEntrada = 40;
+        p.piece[j].primeiraCasaDeCor = 73;
+
+    }
+
+    atualizarLetrasPieces(p, tabuleiro);
+}
+
+static void iniciarAmarelo(Player & p, char tabuleiro[LINHAS][COLUNAS])
+{
+    int j = 0;
+    p.piece[j++].posicao_linha = 3;
+    p.piece[j++].posicao_linha = 3;
+    p.piece[j++].posicao_linha = 4;
+    p.piece[j++].posicao_linha = 4;
+
+    j = 0;
+    p.piece[j++].posicao_coluna = 12;
+    p.piece[j++].posicao_coluna = 13;
+    p.piece[j++].posicao_coluna = 12;
+    p.piece[j++].posicao_coluna = 13;
+
+    for(j = 0; j < 4; ++j)
+    {
+        p.piece[j].estaNaPosicaoInicial = true;
+        p.piece[j].coordenadaDeSaida = 3;
+        p.piece[j].coordenadaDeEntrada = 1;
+        p.piece[j].primeiraCasaDeCor = 52;
+
+    }
+
+    atualizarLetrasPieces(p, tabuleiro);
+
+
+}
+
+static void iniciarAzul(Player & p, char tabuleiro[LINHAS][COLUNAS])
+{
+    int j = 0;
+    p.piece[j++].posicao_linha = 12;
+    p.piece[j++].posicao_linha = 12;
+    p.piece[j++].posicao_linha = 13;
+    p.piece[j++].posicao_linha = 13;
+
+    j = 0;
+    p.piece[j++].posicao_coluna = 12;
+    p.piece[j++].posicao_coluna = 13;
+    p.piece[j++].posicao_coluna = 12;
+    p.piece[j++].posicao_coluna = 13;
+
+    for(j = 0; j < 4; j++)
     {
 
-       for(int j = 0; j < 4; j++)
-       {
-           players[i].piece[j].ehTorre = 0;
-           players[i].piece[j].cor = (Cor) i;
-           players[i].piece[j].coordenada = -1;
-
-       }
+        p.piece[j].estaNaPosicaoInicial = true;
+        p.piece[j].coordenadaDeSaida = 16;
+        p.piece[j].coordenadaDeEntrada = 14;
+        p.piece[j].primeiraCasaDeCor = 59;
     }
-    int j;
-    Cor cor;
+
+    atualizarLetrasPieces(p, tabuleiro);
+
+}
+
+static void iniciarVermelho(Player & p, char tabuleiro[LINHAS][COLUNAS])
+{
+    int j = 0;
+    p.piece[j++].posicao_linha = 12;
+    p.piece[j++].posicao_linha = 12;
+    p.piece[j++].posicao_linha = 13;
+    p.piece[j++].posicao_linha = 13;
 
     j = 0;
+    p.piece[j++].posicao_coluna = 3;
+    p.piece[j++].posicao_coluna = 4;
+    p.piece[j++].posicao_coluna = 3;
+    p.piece[j++].posicao_coluna = 4;
 
-    cor = VERDE;
-    players[cor].piece[j++].posicao_linha = 3;
-    players[cor].piece[j++].posicao_linha = 3;
-    players[cor].piece[j++].posicao_linha = 4;
-    players[cor].piece[j++].posicao_linha = 4;
+    for(j = 0; j < 4; j++)
+    {
+        p.piece[j].estaNaPosicaoInicial = true;
+        p.piece[j].coordenadaDeSaida = 29;
+        p.piece[j].coordenadaDeEntrada = 27;
+        p.piece[j].primeiraCasaDeCor = 66;
+    }
 
-    j = 0;
-    players[cor].piece[j++].posicao_coluna = 3;
-    players[cor].piece[j++].posicao_coluna = 4;
-    players[cor].piece[j++].posicao_coluna = 3;
-    players[cor].piece[j++].posicao_coluna = 4;
+    atualizarLetrasPieces(p, tabuleiro);
+}
 
-    j = 0;
-    cor = AMARELO;
-
-    players[cor].piece[j++].posicao_linha = 3;
-    players[cor].piece[j++].posicao_linha = 3;
-    players[cor].piece[j++].posicao_linha = 4;
-    players[cor].piece[j++].posicao_linha = 4;
-
-    j = 0;
-    players[cor].piece[j++].posicao_coluna = 12;
-    players[cor].piece[j++].posicao_coluna = 13;
-    players[cor].piece[j++].posicao_coluna = 12;
-    players[cor].piece[j++].posicao_coluna = 13;
-
-    j = 0;
-    cor = VERMELHO;
-
-    players[cor].piece[j++].posicao_linha = 12;
-    players[cor].piece[j++].posicao_linha = 12;
-    players[cor].piece[j++].posicao_linha = 13;
-    players[cor].piece[j++].posicao_linha = 13;
-
-    j = 0;
-    players[cor].piece[j++].posicao_coluna = 3;
-    players[cor].piece[j++].posicao_coluna = 4;
-    players[cor].piece[j++].posicao_coluna = 3;
-    players[cor].piece[j++].posicao_coluna = 4;
-
-
-    j = 0;
-    cor = AZUL;
-
-    players[cor].piece[j++].posicao_linha = 12;
-    players[cor].piece[j++].posicao_linha = 12;
-    players[cor].piece[j++].posicao_linha = 13;
-    players[cor].piece[j++].posicao_linha = 13;
-
-    j = 0;
-    players[cor].piece[j++].posicao_coluna = 12;
-    players[cor].piece[j++].posicao_coluna = 13;
-    players[cor].piece[j++].posicao_coluna = 12;
-    players[cor].piece[j++].posicao_coluna = 13;
-
-    atualizarLetrasPieces(players, tabuleiro);
+void criarJogador(Player & p, char nome[], char tabuleiro[LINHAS][COLUNAS], int pn)
+{
+    strcpy(p.nome, nome);
+    p.pecasEmJogo = 4;
 
     for(int j = 0; j < 4; j++)
     {
-            players[AMARELO].piece[j].estaNaPosicaoInicial = true;
-            players[AMARELO].piece[j].coordenadaDeSaida = 3;
-            players[AMARELO].piece[j].coordenadaDeEntrada = 1;
-            players[AMARELO].piece[j].primeiraCasaDeCor = 52;
-
-
-            players[AZUL].piece[j].estaNaPosicaoInicial = true;
-            players[AZUL].piece[j].coordenadaDeSaida = 16;
-            players[AZUL].piece[j].coordenadaDeEntrada = 14;
-            players[AZUL].piece[j].primeiraCasaDeCor = 59;
-
-            players[VERMELHO].piece[j].estaNaPosicaoInicial = true;
-            players[VERMELHO].piece[j].coordenadaDeSaida = 29;
-            players[VERMELHO].piece[j].coordenadaDeEntrada = 27;
-            players[VERMELHO].piece[j].primeiraCasaDeCor = 66;
-
-            players[VERDE].piece[j].estaNaPosicaoInicial = true;
-            players[VERDE].piece[j].coordenadaDeSaida = 42;
-            players[VERDE].piece[j].coordenadaDeEntrada = 40;
-            players[VERDE].piece[j].primeiraCasaDeCor = 73;
+           p.piece[j].ehTorre = 0;
+           p.piece[j].cor = (Cor) pn;
+           p.piece[j].coordenada = -1;
 
     }
 
+    if(pn == VERDE)
+        iniciarVerde(p, tabuleiro);
+    else if(pn == AMARELO)
+        iniciarAmarelo(p, tabuleiro);
+    else if(pn == VERMELHO)
+        iniciarVermelho(p, tabuleiro);
+    else if(pn == AZUL)
+        iniciarAzul(p, tabuleiro);
 
 }
 
