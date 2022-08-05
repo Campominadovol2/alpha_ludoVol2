@@ -5,6 +5,7 @@
 #include "posicao.h"
 #include "jogo.h"
 
+
 int posicaoPeca(Player p, char l)
 {
     for(int i = 0; i < 4; i++)

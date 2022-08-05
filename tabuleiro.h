@@ -7,19 +7,6 @@
 #include "posicao.h"
 #include "jogo.h"
 
-void removerJogador(Player & p, char tabuleiro[LINHAS][COLUNAS])
-{
-    for(int i = 0; i < 4; i++)
-    {
-        p.piece[i].letra = '-';
-
-        int x = p.piece[i].posicao_linha;
-        int y = p.piece[i].posicao_coluna;
-
-        tabuleiro[x][y] = '-';
-    }
-}
-
 
 void iniciarTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
 

@@ -19,6 +19,7 @@ typedef struct
     int coordenada;
     int coordenadaDeSaida;
     int coordenadaDeEntrada;
+    int coordenadaFinal;
     int primeiraCasaDeCor;
     bool estaNaPosicaoInicial;
     bool estaEmJogo;
@@ -76,6 +77,7 @@ static void iniciarVerde(Player & p, char tabuleiro[LINHAS][COLUNAS])
         p.piece[j].estaNaPosicaoInicial = true;
         p.piece[j].coordenadaDeSaida = 42;
         p.piece[j].coordenadaDeEntrada = 40;
+        p.piece[j].coordenadaFinal = 73 + 6;
         p.piece[j].primeiraCasaDeCor = 73;
         p.piece[j].estaEmJogo = p.vaiJogar;
 
@@ -104,6 +106,7 @@ static void iniciarAmarelo(Player & p, char tabuleiro[LINHAS][COLUNAS])
         p.piece[j].coordenadaDeSaida = 3;
         p.piece[j].coordenadaDeEntrada = 1;
         p.piece[j].primeiraCasaDeCor = 52;
+        p.piece[j].coordenadaFinal = 52 + 6;
         p.piece[j].estaEmJogo = p.vaiJogar;
 
 
@@ -133,6 +136,7 @@ static void iniciarAzul(Player & p, char tabuleiro[LINHAS][COLUNAS])
         p.piece[j].coordenadaDeSaida = 16;
         p.piece[j].coordenadaDeEntrada = 14;
         p.piece[j].primeiraCasaDeCor = 59;
+        p.piece[j].coordenadaFinal = 59 + 6;
         p.piece[j].estaEmJogo = p.vaiJogar;
 
     }
@@ -162,6 +166,7 @@ static void iniciarVermelho(Player & p, char tabuleiro[LINHAS][COLUNAS])
         p.piece[j].coordenadaDeSaida = 29;
         p.piece[j].coordenadaDeEntrada = 27;
         p.piece[j].primeiraCasaDeCor = 66;
+        p.piece[j].coordenadaFinal = 66 + 6;
         p.piece[j].estaEmJogo = p.vaiJogar;
 
     }
@@ -169,11 +174,28 @@ static void iniciarVermelho(Player & p, char tabuleiro[LINHAS][COLUNAS])
     atualizarLetrasPieces(p, tabuleiro);
 }
 
+
+void removerJogador(Player & p, char tabuleiro[LINHAS][COLUNAS])
+{
+    for(int i = 0; i < 4; i++)
+    {
+        p.piece[i].letra = '-';
+
+        int x = p.piece[i].posicao_linha;
+        int y = p.piece[i].posicao_coluna;
+
+        tabuleiro[x][y] = '-';
+    }
+}
+
+
 void criarJogador(Player & p, char nome[], char tabuleiro[LINHAS][COLUNAS], int pn, bool vaiJogar)
 {
     strcpy(p.nome, nome);
     p.pecasEmJogo = 4;
     p.vaiJogar = vaiJogar;
+
+
 
     for(int j = 0; j < 4; j++)
     {
@@ -191,6 +213,13 @@ void criarJogador(Player & p, char nome[], char tabuleiro[LINHAS][COLUNAS], int 
         iniciarVermelho(p, tabuleiro);
     else if(pn == AZUL)
         iniciarAzul(p, tabuleiro);
+
+    if(!p.vaiJogar)
+    {
+        removerJogador(p, tabuleiro);
+        return;
+    }
+
 
 }
 

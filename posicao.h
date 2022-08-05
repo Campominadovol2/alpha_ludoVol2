@@ -287,6 +287,13 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
     int player = getPlayer(letra);
     int peca = posicaoPeca(players[player], letra);
 
+    int temp = players[player].piece[peca].coordenadaFinal - players[player].piece[peca].coordenada;
+
+    if(temp <= 6)
+        if(numDeCasas > temp)
+            return 20;
+
+
     atualizarSobreposicao(players[player], letra);
 
 
