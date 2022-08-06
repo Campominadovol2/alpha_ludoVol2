@@ -10,6 +10,7 @@
 #define STAR3 37
 #define STAR4 50
 
+
 static const int coord[][2] = {{1, 7},
                      {1, 8},
                      {1, 9},
@@ -93,8 +94,11 @@ static const int coord[][2] = {{1, 7},
 };
                      //primeira coluna esquerda};
 
+
+
 char getLetra(Player p, int posicao)
 {
+    ///Recebe um jogador e uma posição de peça e retorna a letra. Essa função nem é usada, mas existe;
     return p.piece[posicao].letra;
 }
 
@@ -124,7 +128,7 @@ void atualizarSobreposicao(Player & p, char l)
 
 }
 
-
+///printa um quadrado nas posições X e Y
 static void printarQuadrado(int x, int y, int cor)
 {
     textcolor(cor);
@@ -132,6 +136,11 @@ static void printarQuadrado(int x, int y, int cor)
     cout << "██";
 }
 
+/**
+    getColor
+    recebe a posição do jogador no vetor
+    retorna a cor de um jogador, mas nesse caso, retorna a do da CONIO, para usar na coloração das casas e peças
+*/
 int getColor(Cor p)
 {
     if(p == AMARELO)
@@ -142,7 +151,7 @@ int getColor(Cor p)
         return GREEN;
     return RED;
 }
-
+///Essa função atualiza a matriz logo depois de atualizar o visual;
 void atualizarMatrix(char tabuleiro[LINHAS][COLUNAS], Player players[])
 {
     for(int i = 0; i < 4; i++)
@@ -167,10 +176,14 @@ void atualizarMatrix(char tabuleiro[LINHAS][COLUNAS], Player players[])
     }
 }
 
+///recebe uma coordenada e retorna true se a casa for uma estrela
 bool eh_estrela(int casa)
 {
     return casa == STAR1 || casa == STAR2 || casa == STAR3 || casa == STAR4;
 }
+
+///Recebe o vetor de jogadores e uma coordenada e retorna true se a casa for especial;
+///As peças não podem sair de jogo enquanto estiverem em uma casa especial
 bool ehCasaEspecial(Player p[], int casa)
 {
     for(int i = 0; i < 4; i++)
@@ -184,6 +197,8 @@ bool ehCasaEspecial(Player p[], int casa)
     return false || eh_estrela(casa);
 }
 
+
+///faz a troca de um caractere de lugar na matriz, vc n vai usar, então rlx
 static void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char tabuleiro[LINHAS][COLUNAS], Player players[], bool ehUltimaVolta)
 {
 
@@ -281,7 +296,16 @@ static void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna,
 
 }
 
+/**
+    andarCasas
+    recebe o tabuleiro, o resultado do dado, a letra a ser movimentada e o vetor de jogadores
+    retornos:
+    retorna 20 caso o peça esteja na reta final e tire mais doq oq falta pra chegar no final
+    retorna -1 se a peça estiver na posição inicial e o dado não foi 6
+    retorna 0 se a jogada ocorreu com sucesso
+    retorna 1 se uma peça chegou no destino
 
+*/
 int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Player players[])
 {
     int player = getPlayer(letra);

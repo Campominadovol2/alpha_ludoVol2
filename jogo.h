@@ -14,33 +14,54 @@ typedef enum Cor
     AZUL
 } Cor;
 
+///struct do tipo peça
 typedef struct
 {
+    ///Cordenada atual
     int coordenada;
+    ///A casa de saída dela
     int coordenadaDeSaida;
+    ///A casa de entrada da reta final
     int coordenadaDeEntrada;
+    ///A coordenada do destino; Esse dado existe pois existem 4 coordenadas que levam no mesmo ponto na matriz de coordenada
     int coordenadaFinal;
+    ///A coordenada da primeira casa colorida da passarela
     int primeiraCasaDeCor;
+    ///Se a peça está na sua casa de inicio
     bool estaNaPosicaoInicial;
+    ///Se a peça está em jogo. Esse valor muda para false quando uma peça chegar no final
     bool estaEmJogo;
+
+    ///esses 2 membroa apenas guardam a posição inicial para facilitar na hora de voltar. ESSE VALOR NÃO É ALTERADO
     int posicao_linha;
     int posicao_coluna;
+
+    ///verifica se 2 peças da mesma cor estão na mesma casa
     bool ehTorre;
+    ///Cor da peça com base no enum
     Cor cor;
+    ///Letra que representa a peça
     char letra;
 
 }Piece; //Peça
 
+///Struct do tipo jogador
 typedef struct
 {
+    ///Número de peças desse jogador que ainda estão em jogo
     int pecasEmJogo;
+    ///Se esse jogador vai ou não jogar; usada para auxiliar no modo de 3 ou 2 jogadores
     bool vaiJogar;
+    ///O vetor de peças de um jogador
     Piece piece[4];
+    /// O nome do jogador
     char nome[20];
+    ///Cor da peça
     Cor cor;
 
 }Player;
 
+///Pega as letras do tabuleiro e atribui no elemento letra da struct de peças
 static void atualizarLetrasPieces(Player & p, char tabuleiro[LINHAS][COLUNAS])
 {
     for(int j = 0; j < 4; j++)
@@ -58,6 +79,7 @@ static void atualizarLetrasPieces(Player & p, char tabuleiro[LINHAS][COLUNAS])
 
 }
 
+///IGNORE as 4 próximas
 static void iniciarVerde(Player & p, char tabuleiro[LINHAS][COLUNAS])
 {
     int j = 0;
@@ -174,7 +196,7 @@ static void iniciarVermelho(Player & p, char tabuleiro[LINHAS][COLUNAS])
     atualizarLetrasPieces(p, tabuleiro);
 }
 
-
+///recebe 1 jogador e a matriz para trocas os valores desse jogador por traços "-"
 void removerJogador(Player & p, char tabuleiro[LINHAS][COLUNAS])
 {
     for(int i = 0; i < 4; i++)
@@ -188,7 +210,12 @@ void removerJogador(Player & p, char tabuleiro[LINHAS][COLUNAS])
     }
 }
 
+/**
 
+    criarJogador ---- IMPORTANTE
+    Recebe um único jogador, uma string com o nome, a posição desse jogador, que no caso é a cor, e se ele vai ou não jogar
+
+*/
 void criarJogador(Player & p, char nome[], char tabuleiro[LINHAS][COLUNAS], int pn, bool vaiJogar)
 {
     strcpy(p.nome, nome);

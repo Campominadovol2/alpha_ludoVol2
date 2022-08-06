@@ -7,6 +7,7 @@
 #include "posicao.h"
 #include "jogo.h"
 
+///Fodasse os comentários dessa biblioteca, apenas use.
 
 void iniciarTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
 
