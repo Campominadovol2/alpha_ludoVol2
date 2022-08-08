@@ -8,7 +8,7 @@
 // Nesse caso, MINGW, Clang e GCC
 #ifdef __MINGW32__
 #include <windows.h>
-#include <conio2.h>
+#include "gconio.h"
 // Na bibliotaca gconio.h, existe a função delay(), ela tem a mesma funcionalidade da Sleep()
 // Para unificar, caso a delay seja chamada no compilador MINGW, padrão do codeblocks, ela chamará a Sleep()
 void delay(int n)

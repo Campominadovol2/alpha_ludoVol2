@@ -2,10 +2,26 @@
 #define RANDOM_H
 #include <time.h>
 
-void random_numbers(int vetor[],int posini ,int tam)
+void random_numbers(int vetor[], int tam)
 {
-    srand(time(NULL));
-    for (int i = posini; i < tam; i++)
+    for (int i = 0; i < tam; i++)
+    {
+        do
+        {
+            vetor[i] = rand() % 7;
+        } while (vetor[i] == 0 || vetor[i] > 7);
+
+        if (vetor[i] != 6)
+        {
+            break;
+        }
+    }
+}
+
+// apenas para teste, a superior teve limite delimitado, embora não seja nessario
+void random_generic(int vetor[], int tam)
+{
+    for (int i = 0; i < tam; i++)
     {
         do
         {
@@ -55,6 +71,46 @@ int organizador(int vetor[], int tam)
         ind++;
     }
     return ind;
+}
+
+void deletetoken(int vetor[], int tam)
+{
+    int aux[7] = {0};
+    random_numbers(aux, 7);
+    for (int i = 0; i < tam; i++)
+    {
+        if (i > 2)
+        {
+            vetor[i] = 0;
+        }
+    }
+    int j = 0;
+    for (int i = 0; i < tam; i++)
+    {
+        if (vetor[i] == 0)
+        {
+            if (aux[j] != 0)
+            {
+                vetor[i] = aux[j];
+                j++;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    for (int i = 0; i < tam; i++)
+    {
+        for(int j=i+1; j<tam; j++){
+            int temp=0;
+            if(vetor[i]<vetor[j]){
+                temp=vetor[i];
+                vetor[i]=vetor[j];
+                vetor[j]=temp;
+            }
+        }
+    }
 }
 
 #endif // RANDOM_H

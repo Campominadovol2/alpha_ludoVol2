@@ -16,6 +16,7 @@ using namespace std;
 #include "auxiliares.h"
 #include "random.h"
 #include "analisador.h"
+#include "desenhos.h"
 
 void posicionarCursorNoMeio();
 void darZoom(int a);
@@ -35,10 +36,11 @@ int main()
     Player players[4];
     iniciarTabuleiro(tabuleiro);
 
-
+    //TELA DE SELECIONAR MODO DE JOGO
     int mode = 0, numplayers;
     cout << "Digite o numero de players: ";
     cin >> mode;
+    system("cls");
 
     if      (mode == 2)
     {
@@ -81,19 +83,24 @@ int main()
         numplayers = 4;
     }
     
-    int sortvetor[3], vetorseq[4];
+    int randomicnumbers[10], vetorseq[4];
     sequencial(numplayers, vetorseq);
-
     printTabuleiro(tabuleiro);
+
+    //LACOS DE PARTIDA
+    desenhar_quadrado(40, 20, 35, 1);
     while (1)
     {   
-        for (int ind = 0; ind < numplayers; ind++)
+        for (int ind = 0; ind < numplayers; ind++) //utilizar o indice desse vetor para direcionar jogador
         {
             // BLOCO DE JOGADA PARA CADA JOGADOR
-            zerarvetor(sortvetor, 3);
-            random_numbers(sortvetor, 0, 3);
-            gotoxy(53, 3);
-            analisamento(sortvetor, players[vetorseq[ind]].pecasEmJogo);
+            zerarvetor(randomicnumbers, 10);
+            random_numbers(randomicnumbers, 3);
+            preencher_com_espacos(38, 18, 36, 2);
+            gotoxy(40, 3);
+            printf("Vez do jogador: %s", players[vetorseq[ind]].nome);
+            desenhar_linha_horizontal(37, 4, 36);
+            analisamento(randomicnumbers, players[vetorseq[ind]].pecasEmJogo, 36, 5);
             getch();
         }
     }
