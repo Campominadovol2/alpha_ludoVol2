@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdio>
-#include "random.h"
-#include "analisador.h"
+#include "./Bibliotecas/random.h"
+#include "./Bibliotecas/analisador.h"
 #include <time.h>
 using namespace std;
 
@@ -19,7 +19,7 @@ int main()
         cin >> numb1;
         cout << "Digite o numero de tokens que chegaram ao fim: ";
         cin >> numb2;
-        analisamento(vetor, numb1, numb2, 2, 2);
+        jogamentos(numb1, numb2, 1, 1);
         cout << "Continue? ";
         cin >> an;
         if (an == 0)

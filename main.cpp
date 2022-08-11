@@ -1,5 +1,5 @@
 #include <iostream>
-#include "gconio.h"
+#include "./Bibliotecas/gconio.h"
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
@@ -11,15 +11,15 @@
 
 using namespace std;
 
-#include "tabuleiro.h"
-#include "posicao.h"
-#include "jogo.h"
-#include "auxiliares.h"
-#include "random.h"
-#include "analisador.h"
-#include "desenhos.h"
+#include "./Bibliotecas/tabuleiro.h"
+#include "./Bibliotecas/posicao.h"
+#include "./Bibliotecas/jogo.h"
+#include "./Bibliotecas/auxiliares.h"
+#include "./Bibliotecas/random.h"
+#include "./Bibliotecas/analisador.h"
+#include "./Bibliotecas/desenhos.h"
 
-int pecasNoInicio(Player p);s
+int pecasNoInicio(Player p);
 void posicionarCursorNoMeio();
 void darZoom(int a);
 int vezDoProximo(int vezAtual, Player p[]);
@@ -85,7 +85,7 @@ int main()
         numplayers = 4;
     }
     
-    int randomicnumbers[10], vetorseq[4];
+    int vetorseq[4];
     sequencial(numplayers, vetorseq);
     printTabuleiro(tabuleiro);
 
@@ -96,13 +96,11 @@ int main()
         for (int ind = 0; ind < numplayers; ind++) //utilizar o indice desse vetor para direcionar jogador
         {
             // BLOCO DE JOGADA PARA CADA JOGADOR
-            zerarvetor(randomicnumbers, 10);
-            random_numbers(randomicnumbers, 3);
             preencher_com_espacos(38, 18, 36, 2);
             gotoxy(40, 3);
             printf("Vez do jogador: %s", players[vetorseq[ind]].nome);
             desenhar_linha_horizontal(37, 4, 36);
-            analisamento(randomicnumbers, pecasNoInicio(players[vetorseq[ind]]), 4 - players[vetorseq[ind]].pecasEmJogo, 36, 5);
+            //analisamento(randomicnumbers, pecasNoInicio(players[vetorseq[ind]]), 4 - players[vetorseq[ind]].pecasEmJogo, 36, 5);
             getch();
         }
     }
@@ -111,7 +109,7 @@ int main()
 
     return 0;
 }
-/*
+
 void posicionarCursorNoMeio()
 {
     SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
@@ -127,7 +125,7 @@ void darZoom(int a)
         mouse_event(MOUSEEVENTF_WHEEL, MOUSEEVENTF_ABSOLUTE, MOUSEEVENTF_ABSOLUTE, WHEEL_DELTA, NULL);
     }
     keybd_event(VK_LCONTROL, 0x1C, KEYEVENTF_KEYUP, 0);
-}*/
+}
 
 
 int pecasNoInicio(Player p)
