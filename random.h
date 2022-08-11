@@ -45,7 +45,8 @@ void zerarvetor(int vetor[], int tam)
 
 int organizador(int vetor[], int tam)
 {
-    int aux[tam] = {0};
+    int aux[10] = {0};
+
     // serve para retirar as primeiras casas com 0 e contar os numeros que ainda restam no vetor
     int j = 0;
     for (int i = 0; i < tam; i++)
@@ -64,6 +65,21 @@ int organizador(int vetor[], int tam)
         vetor[i] = aux[i];
     }
 
+    // colocara os numeros em ordem decrescente
+    for (int i = 0; i < tam; i++)
+    {
+        for (int j = i + 1; j < tam; j++)
+        {
+            int temp = 0;
+            if (vetor[i] < vetor[j])
+            {
+                temp = vetor[i];
+                vetor[i] = vetor[j];
+                vetor[j] = temp;
+            }
+        }
+    }
+
     // contara o numero de valores reais (diferentes de 0)
     int ind = 0;
     while (vetor[ind] != 0)
@@ -73,17 +89,17 @@ int organizador(int vetor[], int tam)
     return ind;
 }
 
-void deletetoken(int vetor[], int tam)
+void deletetoken(int vetor[], int tam, int &returnbroke)
 {
     int aux[7] = {0};
     random_numbers(aux, 7);
-    for (int i = 0; i < tam; i++)
+    // numeros a partir da quarta posicao serao zerados para evitar lixo de memoria
+    for (int i = 3; i < tam; i++)
     {
-        if (i > 2)
-        {
-            vetor[i] = 0;
-        }
+        vetor[i] = 0;
     }
+
+    // concatenara o vetor principal e auxiliar
     int j = 0;
     for (int i = 0; i < tam; i++)
     {
@@ -100,17 +116,31 @@ void deletetoken(int vetor[], int tam)
             }
         }
     }
+
+    // ordenacao em ordem decrescente
     for (int i = 0; i < tam; i++)
     {
-        for(int j=i+1; j<tam; j++){
-            int temp=0;
-            if(vetor[i]<vetor[j]){
-                temp=vetor[i];
-                vetor[i]=vetor[j];
-                vetor[j]=temp;
+        for (int j = i + 1; j < tam; j++)
+        {
+            int temp = 0;
+            if (vetor[i] < vetor[j])
+            {
+                temp = vetor[i];
+                vetor[i] = vetor[j];
+                vetor[j] = temp;
             }
         }
     }
+    
+    // codicional para quebrar laco
+    for (int i = 0; i < tam; i++)
+    {
+        if (vetor[i] == 6)
+        {
+            returnbroke = 1;
+        }
+    }
+    returnbroke = 0;
 }
 
 #endif // RANDOM_H

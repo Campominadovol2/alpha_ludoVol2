@@ -392,7 +392,7 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
         if(novaColuna == 8 && novaLinha == 8)
         {
             players[getPlayer(letra)].piece[posicaoPeca(players[getPlayer(letra)], letra)].letra = ' ';
-            players[getPlayer(letra)].piece[posicaoPeca(players[getPlayer(letra)], letra)].estaEmJogo;
+            players[getPlayer(letra)].piece[posicaoPeca(players[getPlayer(letra)], letra)].estaEmJogo = false;
             players[getPlayer(letra)].pecasEmJogo--;
             atualizarMatrix(tabuleiro, players);
 

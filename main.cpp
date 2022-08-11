@@ -4,8 +4,9 @@
 #include <cstring>
 #include <cstdlib>
 #include <cctype>
+#ifdef __WIN32
 #include <windows.h>
-
+#endif
 #define DELAY 0
 
 using namespace std;
@@ -18,6 +19,7 @@ using namespace std;
 #include "analisador.h"
 #include "desenhos.h"
 
+int pecasNoInicio(Player p);s
 void posicionarCursorNoMeio();
 void darZoom(int a);
 int vezDoProximo(int vezAtual, Player p[]);
@@ -100,7 +102,7 @@ int main()
             gotoxy(40, 3);
             printf("Vez do jogador: %s", players[vetorseq[ind]].nome);
             desenhar_linha_horizontal(37, 4, 36);
-            analisamento(randomicnumbers, players[vetorseq[ind]].pecasEmJogo, 36, 5);
+            analisamento(randomicnumbers, pecasNoInicio(players[vetorseq[ind]]), 4 - players[vetorseq[ind]].pecasEmJogo, 36, 5);
             getch();
         }
     }
@@ -109,7 +111,7 @@ int main()
 
     return 0;
 }
-
+/*
 void posicionarCursorNoMeio()
 {
     SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
@@ -125,7 +127,22 @@ void darZoom(int a)
         mouse_event(MOUSEEVENTF_WHEEL, MOUSEEVENTF_ABSOLUTE, MOUSEEVENTF_ABSOLUTE, WHEEL_DELTA, NULL);
     }
     keybd_event(VK_LCONTROL, 0x1C, KEYEVENTF_KEYUP, 0);
+}*/
+
+
+int pecasNoInicio(Player p)
+{
+    int temp = 0;
+    for(int i = 0; i < 4; i++)
+    {
+        if(p.piece[i].estaNaPosicaoInicial)
+            temp++;
+    }
+    return temp;
 }
+
+
+
 
 int vezDoProximo(int vezAtual, Player p[])
 {

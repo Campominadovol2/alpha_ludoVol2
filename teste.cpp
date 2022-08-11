@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include "random.h"
+#include "analisador.h"
 #include <time.h>
 using namespace std;
 
@@ -8,13 +9,17 @@ int main()
 {
     srand((unsigned)time(NULL));
 
-    int vetor[10], aux[7], an;
+    int vetor[10], numb1, numb2, an;
 
     while (1)
     {
         zerarvetor(vetor, 3);
         random_numbers(vetor, 3);
-        deletetoken(vetor, 10);
+        cout << "Digite o numero de tokens dentro da casa: ";
+        cin >> numb1;
+        cout << "Digite o numero de tokens que chegaram ao fim: ";
+        cin >> numb2;
+        analisamento(vetor, numb1, numb2, 2, 2);
         cout << "Continue? ";
         cin >> an;
         if (an == 0)
