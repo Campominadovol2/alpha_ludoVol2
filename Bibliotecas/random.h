@@ -29,7 +29,7 @@ void zerarvetor(int vetor[], int tam)
 }
 
 // RETIRA OS ZEROS, ORDENA DE FORMA DECRESCENTE E RETORNA A QUANTIDADE DE ELEMENTOS
-int organizador(int vetor[])
+void organizador(int vetor[])
 {
     int aux[10] = {0};
 
@@ -72,24 +72,24 @@ int organizador(int vetor[])
     {
         ind++;
     }
-    return ind;
+    //return ind;
 }
 
 // FAZ OS NOVOS SORTEIOS, CONCATENA. USAR O RETURN PARA QUEBRAR O LAÇO
-void deletetoken(int vetor[], int tam, int &returnbroke)
+void deletetoken(int vetor[])
 {
     int aux[7] = {0};
     organizador(vetor);
     random_numbers(aux, 7);
     // numeros a partir da quarta posicao serao zerados para evitar lixo de memoria
-    for (int i = 3; i < tam; i++)
+    for (int i = 3; i < 10; i++)
     {
         vetor[i] = 0;
     }
 
     // concatenara o vetor principal e auxiliar
     int j = 0;
-    for (int i = 0; i < tam; i++)
+    for (int i = 0; i < 10; i++)
     {
         if (vetor[i] == 0)
         {
@@ -106,9 +106,9 @@ void deletetoken(int vetor[], int tam, int &returnbroke)
     }
 
     // ordenacao em ordem decrescente
-    for (int i = 0; i < tam; i++)
+    for (int i = 0; i < 10; i++)
     {
-        for (int j = i + 1; j < tam; j++)
+        for (int j = i + 1; j < 10; j++)
         {
             int temp = 0;
             if (vetor[i] < vetor[j])
@@ -119,16 +119,7 @@ void deletetoken(int vetor[], int tam, int &returnbroke)
             }
         }
     }
-
-    // codicional para quebrar laco
-    for (int i = 0; i < tam; i++)
-    {
-        if (vetor[i] == 6)
-        {
-            returnbroke = 1;
-        }
-    }
-    returnbroke = 0;
+    organizador(vetor);
 }
 
 // EXIBE ELEMENTOS DO VETOR
@@ -188,8 +179,25 @@ void clearposic(int vetor[], int &allnumbers)
             // movimenta a peca
             vetor[i] = 0;
             allnumbers--;
+            return;
         }
     }
+}
+
+// CONDICIONAL PARA O CICLO DE JOGADAS
+void remaining(int vetor[], int &pass)
+// ira checar se ainda existe algum elemento no vetor, tem uma condicao especial para quebrar o while em caso de vencedor]
+// 1 - se ainda tiver elementos, 0 - se nao tiver elemenros
+{
+    for (int i = 0; i < 10; i++)
+    {
+        if (vetor[i] != 0)
+        {
+            pass = 1;
+            return;
+        }
+    }
+    pass = 0;
 }
 
 #endif // RANDOM_H

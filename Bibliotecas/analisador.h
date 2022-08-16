@@ -8,8 +8,9 @@ using namespace std;
 #include <iostream>
 #include "random.h"
 
-void loopnumberssix(int vetor[], int &tokens_stopped, int &tokens_inpercurso, int &tokens_finish, int &tam, int &numberssix, int &allnumbers, int posx, int posy);
-void generalnumbers(int vetor[], int &tokens_stopped, int &tokens_inpercurso, int &tokens_finish, int &tam, int &numberssix, int &allnumbers, int posx, int posy);
+void loopnumberssix(int vetor[], int &tokens_stopped, int &tokens_inpercurso, int &tokens_finish, int &numberssix, int &allnumbers, int posx, int posy, int &pass);
+void generalnumbers(int vetor[], int &tokens_stopped, int &tokens_inpercurso, int &tokens_finish, int &numberssix, int &allnumbers, int posx, int posy, int &pass);
+void testando(int vetor[]);
 
 // PRINCIPAL FUNÇÃO
 void jogamentos(int tokens_stopped, int tokens_finish, int posx, int posy)
@@ -22,34 +23,42 @@ void jogamentos(int tokens_stopped, int tokens_finish, int posx, int posy)
     int vetor[10] = {0};
     random_numbers(vetor, 3);
 
-    int allnumbers, numberssix, temp, pass = 0;
-
-    while (pass == 0)
+    int allnumbers, numberssix, pass = 1;
+    while (pass == 1)
     {
+        organizador(vetor);
         countnumbers(vetor, allnumbers, numberssix);
-        int tam = allnumbers;
-        viewvector(vetor, 3);
-        loopnumberssix(vetor, tokens_stopped, tokens_inpercurso, tokens_finish, tam, numberssix, allnumbers, posx, posy);
-        generalnumbers(vetor, tokens_stopped, tokens_inpercurso, tokens_finish, tam, numberssix, allnumbers, posx, posy);
-        pass++;
+        loopnumberssix(vetor, tokens_stopped, tokens_inpercurso, tokens_finish, numberssix, allnumbers, posx, posy, pass);
+        generalnumbers(vetor, tokens_stopped, tokens_inpercurso, tokens_finish, numberssix, allnumbers, posx, posy, pass);
     }
-
-    // gotoxy(posx, posy++);
-    int newsize = organizador(vetor);
-    // gotoxy(posx, posy++);
-    cout << "Numeros restante: " << newsize << "\n";
-    // gotoxy(posx, posy++);
 }
 
-void loopnumberssix(int vetor[], int &tokens_stopped, int &tokens_inpercurso, int &tokens_finish, int &tam, int &numberssix, int &allnumbers, int posx, int posy)
+// USO TEMPORARIO APENAS PARA TESTAR A POSSIBILIDADE DE DELETAR UM TOKEN
+void testando(int vetor[])
 {
+    // futuramente essa função sera modificada para receber um valor booleano e então permitir a função deletetoken que faa novos sorteios
+    int temp;
+    printf("0/1 para teste de delete: ");
+    scanf("%i", &temp);
+    if (temp == 1)
+    {
+        deletetoken(vetor);
+    }
+}
+
+void loopnumberssix(int vetor[], int &tokens_stopped, int &tokens_inpercurso, int &tokens_finish, int &numberssix, int &allnumbers, int posx, int posy, int &pass)
+{
+    printf("entrou na 6\n");
+    organizador(vetor);
+    countnumbers(vetor, allnumbers, numberssix);
+    viewvector(vetor, 10);
     while (numberssix != 0 && tokens_finish != 4)
     {
-        viewvector(vetor, 3);
+        viewvector(vetor, 10);
         // o laco ocorrera enquanto houver numeros "6"
-
+        printf("\tConsumira o numero: %i\n", vetor[0]);
         // por regra, se hover 3 "6" provenientes de sorteio o jogador perde a vez
-        if (vetor[2] == 6)
+        if (vetor[2] == 6 && tokens_finish != 4)
         {
             // gotoxy(posx, posy++);
             printf("passa a vez01\n");
@@ -57,8 +66,9 @@ void loopnumberssix(int vetor[], int &tokens_stopped, int &tokens_inpercurso, in
             return;
         }
 
+
         // TEM TOKEN APENAS NA CASA OU NO FINAL
-        else if (tokens_inpercurso == 0 && tokens_stopped != 0)
+        else if (tokens_inpercurso == 0 && tokens_stopped != 0 && tokens_finish != 4)
         {
             if (tokens_stopped == 1)
             {
@@ -129,12 +139,13 @@ void loopnumberssix(int vetor[], int &tokens_stopped, int &tokens_inpercurso, in
                     //  função para mover token
                     removesix(vetor, numberssix, allnumbers);
                 }
-                // if deletar algum token ==== deletetoken(vetor, tam, temp);
+                // if deletar algum token;
+                testando(vetor);
             }
         }
 
         // TEM TOKENS APENAS NO PERCURSO OU NO FIM
-        else if (tokens_inpercurso != 0 && tokens_stopped == 0)
+        else if (tokens_inpercurso != 0 && tokens_stopped == 0 && tokens_finish != 4)
         {
             if (tokens_inpercurso == 1) // se houver apenas um token no percurso ele sera movimentado automaticamente
             {
@@ -151,19 +162,26 @@ void loopnumberssix(int vetor[], int &tokens_stopped, int &tokens_inpercurso, in
                 // função para mover token
                 removesix(vetor, numberssix, allnumbers);
             }
-            // if deletar algum token ==== deletetoken(vetor, tam, temp);
+            // if deletar algum token ==== deletetoken(vetor);
+            testando(vetor);
         }
-        // fim da etapa dos numeros 6
+        organizador(vetor);
     }
+    remaining(vetor, pass);
 }
 
-void generalnumbers(int vetor[], int &tokens_stopped, int &tokens_inpercurso, int &tokens_finish, int &tam, int &numberssix, int &allnumbers, int posx, int posy)
+void generalnumbers(int vetor[], int &tokens_stopped, int &tokens_inpercurso, int &tokens_finish, int &numberssix, int &allnumbers, int posx, int posy, int &pass)
 {
+    printf("entro na segunda\n");
+    organizador(vetor);
+    countnumbers(vetor, allnumbers, numberssix);
+    viewvector(vetor, 10);
     // enquanto houver elementos o laco ocorrera
     while (allnumbers != 0 && tokens_stopped != 4)
     {
         // gotoxy(posx, posy++);
-
+        viewvector(vetor, 10);
+        printf("\tConsumira o numero: %i\n", vetor[0]);
         if (tokens_inpercurso == 0)
         {
             // se nao tiver nenhum numero "6" o usuario nao podera retirar um de seus 4 tokens, perde a vez
@@ -172,25 +190,29 @@ void generalnumbers(int vetor[], int &tokens_stopped, int &tokens_inpercurso, in
             return;
         }
 
-        else if (tokens_inpercurso == 1)
+        else if (tokens_inpercurso == 1 && tokens_finish != 4)
         {
             // movimenta o unico token que está fora
             // gotoxy(posx, posy++);
             printf("movimentacao automatica11\n");
             clearposic(vetor, allnumbers);
-            // if deletar algum token ==== deletetoken(vetor, tam, temp); alterar pass para 1 e dar return
+            // if deletar algum token ==== deletetoken(vetor); alterar pass para 1 e dar return
+            testando(vetor);
         }
 
-        else
+        else if (tokens_finish != 4)
         {
             // função para mover alguns dos tokens
             // gotoxy(posx, posy++);
             printf("movimentacao seletiva1, (%i)12\n", tokens_inpercurso);
 
             clearposic(vetor, allnumbers);
-            // if deletar algum token ==== deletetoken(vetor, tam, temp); alterar pass para 1 e dar return
+            // if deletar algum token ==== deletetoken(vetor); alterar pass para 1 e dar return
+            testando(vetor);
         }
+        organizador(vetor);
     }
+    remaining(vetor, pass);
 }
 
 // NOTES:
