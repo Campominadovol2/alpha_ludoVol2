@@ -5,9 +5,7 @@
 #include <cstdlib>
 #include <cctype>
 #include <time.h>
-#ifdef __WIN32
-#include <windows.h>
-#endif
+
 #define DELAY 0
 
 using namespace std;
@@ -21,6 +19,7 @@ using namespace std;
 #include "./Bibliotecas/desenhos.h"
 
 int pecasNoInicio(Player p);
+
 void posicionarCursorNoMeio();
 void darZoom(int a);
 int vezDoProximo(int vezAtual, Player p[]);
@@ -31,8 +30,10 @@ int main()
     //srand(time(NULL));
     darZoom(7);
 
+    #ifdef _WIN32
     system("chcp 65001");
     system("MODE con cols=80 lines=22");
+    #endif
     clrscr();
 
     char tabuleiro[LINHAS][COLUNAS];
@@ -43,7 +44,7 @@ int main()
     int mode = 0, numplayers;
     cout << "Digite o numero de players: ";
     cin >> mode;
-    system("cls");
+    clrscr();
 
     if (mode == 2)
     {
@@ -112,6 +113,7 @@ int main()
     return 0;
 }
 
+#ifdef _WIN32
 void posicionarCursorNoMeio()
 {
     SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
@@ -124,10 +126,24 @@ void darZoom(int a)
     for (int i = 0; i < a; i++)
     {
         posicionarCursorNoMeio();
-        mouse_event(MOUSEEVENTF_WHEEL, MOUSEEVENTF_ABSOLUTE, MOUSEEVENTF_ABSOLUTE, WHEEL_DELTA, NULL);
+        mouse_event(MOUSEEVENTF_WHEEL, MOUSEEVENTF_ABSOLUTE, MOUSEEVENTF_ABSOLUTE, WHEEL_DELTA, 0);
     }
     keybd_event(VK_LCONTROL, 0x1C, KEYEVENTF_KEYUP, 0);
 }
+
+#else
+
+void posicionarCursorNoMeio()
+{
+
+}
+
+void darZoom(int a)
+{
+
+}
+
+#endif
 
 int pecasNoInicio(Player p)
 {

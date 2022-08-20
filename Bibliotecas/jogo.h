@@ -216,7 +216,7 @@ void removerJogador(Player & p, char tabuleiro[LINHAS][COLUNAS])
     Recebe um único jogador, uma string com o nome, a posição desse jogador, que no caso é a cor, e se ele vai ou não jogar
 
 */
-void criarJogador(Player & p, char nome[], char tabuleiro[LINHAS][COLUNAS], int pn, bool vaiJogar)
+void criarJogador(Player & p, const char * nome, char tabuleiro[LINHAS][COLUNAS], int pn, bool vaiJogar)
 {
     strcpy(p.nome, nome);
     p.pecasEmJogo = 4;

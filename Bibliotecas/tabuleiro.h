@@ -34,7 +34,9 @@ void printTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
 
             if(temp == '1' || temp == '2' || temp == '6' || temp == '4')
             {
-
+                #ifdef __linux__
+                    temp -= 48;
+                #endif
                 textcolor((int) temp);
                 cout << "██";
 

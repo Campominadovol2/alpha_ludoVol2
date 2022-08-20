@@ -26,7 +26,9 @@ void jogamentos(Player p[], int JogadorVez, char tabuleiro[17][18], int tokens_s
     int tokens_inpercurso = 4 - (tokens_stopped + tokens_finish);
     // etapa de sorteio dos tres primeiros numeros possiveis
     int vetor[10] = {0};
+
     random_numbers(vetor, 3);
+
     int posvetor[2] = {40, 3};
 
     // por regra, se hover 3 "6" provenientes do primeiro sorteio o jogador perde a vez

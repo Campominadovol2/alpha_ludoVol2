@@ -4,9 +4,14 @@
 #ifndef __DESENHOS_H
 #define __DESENHOS_H
 
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_ESC 27
+#define KEY_ENTER 13
+
 // Compilação condicional para ter comportamentos diferentes de acordo com o compilador
 // Nesse caso, MINGW, Clang e GCC
-#ifdef __MINGW32__
+#ifdef _WIN32
 #include <windows.h>
 #include "gconio.h"
 // Na bibliotaca gconio.h, existe a função delay(), ela tem a mesma funcionalidade da Sleep()
@@ -15,12 +20,8 @@ void delay(int n)
 {
     Sleep(n);
 }
-#elif __clang__
-#include <gconio.h>
-#include <stdio_ext.h> //__fpurge
-
-#elif __GNUC__
-#include <gconio.h>
+#elif __linux__
+#include "gconio.h"
 #include <stdio_ext.h> //__fpurge
 
 #endif
@@ -71,7 +72,7 @@ int selecionar_opcao(int x, int y, int num_de_opcoes)
         switch (up_or_down)
         {
 
-        case 'w':
+        case KEY_UP:
             // se a seta estiver em cima, não é possível subir
             if (opcao > 1)
             {
@@ -85,7 +86,7 @@ int selecionar_opcao(int x, int y, int num_de_opcoes)
             }
             break;
 
-        case 's':
+        case KEY_DOWN:
             // Se a seta estiver embaixo, não é possivel descer
             if (opcao < num_de_opcoes)
             {
@@ -97,11 +98,10 @@ int selecionar_opcao(int x, int y, int num_de_opcoes)
                 opcao++;
             }
             break;
-        case 'f':
+        case KEY_ENTER:
             // Retorna o valor de opção
             return opcao;
-        case 'h':
-            return -1;//Help
+
         }
     } while (1);
 }

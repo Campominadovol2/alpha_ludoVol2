@@ -199,8 +199,9 @@ bool ehCasaEspecial(Player p[], int casa)
 
 
 ///faz a troca de um caractere de lugar na matriz, vc n vai usar, então rlx
-static void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char tabuleiro[LINHAS][COLUNAS], Player players[], bool ehUltimaVolta)
+static int atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char tabuleiro[LINHAS][COLUNAS], Player players[], bool ehUltimaVolta)
 {
+    int resultado = 0;
 
     char temp = tabuleiro[linha][coluna];
     int p = getPlayer(temp);
@@ -231,6 +232,8 @@ static void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna,
 
                     gotoxy(y * 2 + 1, x);
                     cout << tabuleiro[x][y] << " ";
+
+                    resultado = -2;
 
                 }
             }
@@ -294,6 +297,7 @@ static void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna,
     tabuleiro[newLinha][newColuna] = temp;
     atualizarMatrix(tabuleiro, players);
 
+    return resultado;
 }
 
 /**
@@ -308,6 +312,7 @@ static void atualizarPosicao(int linha, int coluna, int newLinha, int newColuna,
 */
 int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Player players[])
 {
+    int resultado = 0;
     int player = getPlayer(letra);
     int peca = posicaoPeca(players[player], letra);
 
@@ -337,9 +342,9 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
         novaLinha  = coord[coordenada][0];
         novaColuna = coord[coordenada][1];
 
-        atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players, false);
+        resultado = atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players, false);
         players[player].piece[peca].estaNaPosicaoInicial = false;
-        return 0;
+        return resultado;
     }
 
     for(int i = 0; i < numDeCasas; i++)
@@ -387,7 +392,7 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
         }
 
 
-        atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players, i + 1 == numDeCasas);
+        resultado = atualizarPosicao(linha, coluna, novaLinha, novaColuna, tabuleiro, players, i + 1 == numDeCasas);
 
         if(novaColuna == 8 && novaLinha == 8)
         {
@@ -401,7 +406,7 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
         delay(DELAY);
     }
 
-    return 0;
+    return resultado;
 
 }
 
