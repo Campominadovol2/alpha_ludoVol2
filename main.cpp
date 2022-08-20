@@ -4,6 +4,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <cctype>
+#include <time.h>
 #ifdef __WIN32
 #include <windows.h>
 #endif
@@ -27,7 +28,7 @@ void sequencial(int num, int vetor[]);
 
 int main()
 {
-
+    //srand(time(NULL));
     darZoom(7);
 
     system("chcp 65001");
@@ -38,19 +39,19 @@ int main()
     Player players[4];
     iniciarTabuleiro(tabuleiro);
 
-    //TELA DE SELECIONAR MODO DE JOGO
+    // TELA DE SELECIONAR MODO DE JOGO
     int mode = 0, numplayers;
     cout << "Digite o numero de players: ";
     cin >> mode;
     system("cls");
 
-    if      (mode == 2)
+    if (mode == 2)
     {
         /// Cria��o dos jogares. Isso n�o pode sair do programa
         /// Passa o jogador que vc quer criar, o nome dele, o tabuleiro e se ele vai ou n�o jogar;
         /// A� vc faz um jeito de perguntar quantos v�o jogar e atribui o ultimo elemento com true ou false
 
-        //DOIS PLAYERS
+        // DOIS PLAYERS
         criarJogador(players[VERDE], "VERDE", tabuleiro, VERDE, false);
         criarJogador(players[AZUL], "AZUL", tabuleiro, AZUL, false);
         criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
@@ -59,7 +60,7 @@ int main()
     }
     else if (mode == 3)
     {
-        //TRES PLAYERS
+        // TRES PLAYERS
         criarJogador(players[VERDE], "VERDE", tabuleiro, VERDE, true);
         criarJogador(players[AZUL], "AZUL", tabuleiro, AZUL, false);
         criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
@@ -68,7 +69,7 @@ int main()
     }
     else if (mode == 4)
     {
-        //QUATRO PLAYERS
+        // QUATRO PLAYERS
         criarJogador(players[VERDE], "VERDE", tabuleiro, VERDE, true);
         criarJogador(players[AZUL], "AZUL", tabuleiro, AZUL, true);
         criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
@@ -77,31 +78,32 @@ int main()
     }
     else if (mode == 5)
     {
-        //CINCO PLAYERS
+        // CINCO PLAYERS
         criarJogador(players[VERDE], "VERDE", tabuleiro, VERDE, true);
         criarJogador(players[AZUL], "AZUL", tabuleiro, AZUL, true);
         criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
         criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO, true);
         numplayers = 4;
     }
-    
+
     int vetorseq[4];
     sequencial(numplayers, vetorseq);
     printTabuleiro(tabuleiro);
 
-    //LACOS DE PARTIDA
-    desenhar_quadrado(40, 20, 35, 1);
+    // LACOS DE PARTIDA
+    desenhar_quadrado(40, 20, 35, 0);
     while (1)
-    {   
-        for (int ind = 0; ind < numplayers; ind++) //utilizar o indice desse vetor para direcionar jogador
+    {
+        for (int ind = 0; ind < numplayers; ind++) // utilizar o indice desse vetor para direcionar jogador
         {
             // BLOCO DE JOGADA PARA CADA JOGADOR
-            preencher_com_espacos(38, 18, 36, 2);
-            gotoxy(40, 3);
+            preencher_com_espacos(38, 13, 36, 1);
+            gotoxy(40, 1);
+            textcolor(WHITE);
             printf("Vez do jogador: %s", players[vetorseq[ind]].nome);
-            desenhar_linha_horizontal(37, 4, 36);
-            //analisamento(randomicnumbers, pecasNoInicio(players[vetorseq[ind]]), 4 - players[vetorseq[ind]].pecasEmJogo, 36, 5);
-            getch();
+            desenhar_linha_horizontal(37, 2, 36);
+            jogamentos(players, vetorseq[ind], tabuleiro, pecasNoInicio(players[vetorseq[ind]]), 4 - players[vetorseq[ind]].pecasEmJogo, 36, 0);
+            // condição de vencedor para parar o jogo e printar o vencedor
         }
     }
 
@@ -127,20 +129,16 @@ void darZoom(int a)
     keybd_event(VK_LCONTROL, 0x1C, KEYEVENTF_KEYUP, 0);
 }
 
-
 int pecasNoInicio(Player p)
 {
     int temp = 0;
-    for(int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
     {
-        if(p.piece[i].estaNaPosicaoInicial)
+        if (p.piece[i].estaNaPosicaoInicial)
             temp++;
     }
     return temp;
 }
-
-
-
 
 int vezDoProximo(int vezAtual, Player p[])
 {

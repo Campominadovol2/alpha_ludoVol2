@@ -1,10 +1,17 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 #include <time.h>
+#include "gconio.h"
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+#include "desenhos.h"
+using namespace std;
 
 // FAZ SORTEIO DE NUMEROS
 void random_numbers(int vetor[], int tam)
 {
+    
     for (int i = 0; i < tam; i++)
     {
         do
@@ -72,7 +79,7 @@ void organizador(int vetor[])
     {
         ind++;
     }
-    //return ind;
+    // return ind;
 }
 
 // FAZ OS NOVOS SORTEIOS, CONCATENA. USAR O RETURN PARA QUEBRAR O LAÇO
@@ -123,13 +130,20 @@ void deletetoken(int vetor[])
 }
 
 // EXIBE ELEMENTOS DO VETOR
-void viewvector(int vetor[], int tam)
+void viewvector(int vetor[], int tam, int posx, int posy)
 {
-    for (int i = 0; i < tam; i++)
-    {
-        printf("{ %i }", vetor[i]);
+
+    gotoxy(posx, posy);
+    for(int i=0; i<10; i++){
+        printf("   ");
     }
-    printf("\n");
+    int i = 0;
+    gotoxy(posx, posy);
+    while (vetor[i] != 0)
+    {
+        printf("[%i]", vetor[i]);
+        i++;
+    }
 }
 
 // OBTEM O NUMERO DE ELEMENTOS GERAIS E OS DE NUMERO SEIS

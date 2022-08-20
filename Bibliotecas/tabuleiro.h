@@ -12,7 +12,7 @@
 void iniciarTabuleiro(char tabuleiro[LINHAS][COLUNAS]){
 
 
-    FILE * file = fopen("tabuleiro.txt", "r");
+    FILE * file = fopen("./Bibliotecas/tabuleiro.txt", "r");
 
     for(int i = 0; i < LINHAS; i++)
     {
