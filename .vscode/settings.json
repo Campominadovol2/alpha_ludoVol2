@@ -3,6 +3,8 @@
         "cstdio": "cpp",
         "iostream": "cpp",
         "istream": "cpp",
-        "cstdlib": "cpp"
+        "cstdlib": "cpp",
+        "random": "cpp",
+        "xutility": "cpp"
     }
 }

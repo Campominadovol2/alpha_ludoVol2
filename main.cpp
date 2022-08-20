@@ -46,6 +46,8 @@ int main()
     cin >> mode;
     clrscr();
 
+    int vezDe;
+
     if (mode == 2)
     {
         /// Cria��o dos jogares. Isso n�o pode sair do programa
@@ -58,6 +60,7 @@ int main()
         criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
         criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO, true);
         numplayers = 2;
+        vezDe = 1;
     }
     else if (mode == 3)
     {
@@ -67,6 +70,7 @@ int main()
         criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
         criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO, true);
         numplayers = 3;
+        vezDe = 0;
     }
     else if (mode == 4)
     {
@@ -76,36 +80,80 @@ int main()
         criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
         criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO, true);
         numplayers = 4;
-    }
-    else if (mode == 5)
-    {
-        // CINCO PLAYERS
-        criarJogador(players[VERDE], "VERDE", tabuleiro, VERDE, true);
-        criarJogador(players[AZUL], "AZUL", tabuleiro, AZUL, true);
-        criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
-        criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO, true);
-        numplayers = 4;
+        vezDe = rand() % 4;
     }
 
-    int vetorseq[4];
-    sequencial(numplayers, vetorseq);
+
     printTabuleiro(tabuleiro);
 
     // LACOS DE PARTIDA
     desenhar_quadrado(40, 20, 35, 0);
     while (1)
     {
-        for (int ind = 0; ind < numplayers; ind++) // utilizar o indice desse vetor para direcionar jogador
+        size_t size;
+        int * vetor = sortearDados(size);
+
+        bubble_n_sort(vetor, size, 0);
+
+        if(contarNum6(vetor, size) == 3)
         {
-            // BLOCO DE JOGADA PARA CADA JOGADOR
-            preencher_com_espacos(38, 13, 36, 1);
-            gotoxy(40, 1);
-            textcolor(WHITE);
-            printf("Vez do jogador: %s", players[vetorseq[ind]].nome);
-            desenhar_linha_horizontal(37, 2, 36);
-            jogamentos(players, vetorseq[ind], tabuleiro, pecasNoInicio(players[vetorseq[ind]]), 4 - players[vetorseq[ind]].pecasEmJogo, 36, 0);
-            // condição de vencedor para parar o jogo e printar o vencedor
+            continue;
         }
+
+        for(int i = 0; i < size; i++)
+        {
+            textcolor(15);
+            desenhar_quadrado(40, 20, 35, 0);
+
+            gotoxy(42, 2);
+            cout << "Vez de " << players[vezDe].nome;
+            viewvector(vetor, size, 40, 6);
+
+            char temp = selecionartoken(players[vezDe], containSix(vetor, size));
+            desenhar_quadrado(40, 20, 35, 0);
+            int dado = selecionarNumero(vetor, size, temp, players[vezDe]);
+
+            for(int i = 0; i < size; i++)
+            {
+                if(vetor[i] == dado)
+                {
+                    vetor[i] = 0;
+                    break;
+                }
+            }
+            
+            
+            int r = andarCasas(tabuleiro, vetor[i], temp, players);
+            vetor[i] = 0;
+
+            if(r == -2 || r == 1)
+            {
+                int aux = i + 1;
+                size++;
+                vetor = (int*) realloc(vetor, size);
+                vetor[aux] = rand() % 6 + 1; 
+
+                while(vetor[aux++] == 6)
+                {
+                    size++;
+                    vetor = (int*) realloc(vetor, size * sizeof(int));
+                    vetor[aux] = rand() % 6 + 1; 
+                }
+
+            }
+
+            if(players[vezDe].pecasEmJogo == 0)
+            {
+                cout << "VITORIA";
+                return 0;   
+            }
+
+            
+        }
+
+        vezDe = vezDoProximo(vezDe, players);
+
+        
     }
 
     printTabuleiro(tabuleiro);
