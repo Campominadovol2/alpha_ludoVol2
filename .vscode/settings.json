@@ -5,6 +5,7 @@
         "istream": "cpp",
         "cstdlib": "cpp",
         "random": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "ostream": "cpp"
     }
 }

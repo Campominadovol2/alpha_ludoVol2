@@ -95,8 +95,8 @@ int tokensDisponiveis(Player p, int _pos_x, int __pos_y, char vetor[], bool cond
 char selecionartoken(Player p, bool cond)
 {
     char tokensdisp[4];
-    int quantidade = tokensDisponiveis(p, 40, 9, tokensdisp, cond);
-    int numescolha = selecionar_opcao(37, 9, quantidade);
+    int quantidade = tokensDisponiveis(p, 40, 7, tokensdisp, cond);
+    int numescolha = selecionar_opcao(37, 7, quantidade);
 
     return tokensdisp[numescolha - 1];
 }
@@ -146,7 +146,7 @@ bool containSix(int *vetor, int tam)
 
 int selecionarNumero(int *vetor, int size, char l, Player p)
 {
-    int x = 40, y = 10;
+    int x = 40, y = 7;
     int *arr = (int *)malloc(sizeof(int) * size);
     int k = 0;
     int pos = posicaoPeca(p, l);
@@ -165,7 +165,7 @@ int selecionarNumero(int *vetor, int size, char l, Player p)
             }
         }
 
-        int temp = selecionar_opcao(39, 10, k);
+        int temp = selecionar_opcao(39, 7, k);
         return arr[k];
     }
 
@@ -182,7 +182,7 @@ int selecionarNumero(int *vetor, int size, char l, Player p)
             }
         }
 
-        int temp = selecionar_opcao(39, 10, k);
+        int temp = selecionar_opcao(39, 7, k);
         return arr[k];
     }
     else
@@ -198,7 +198,7 @@ int selecionarNumero(int *vetor, int size, char l, Player p)
             }
         }
 
-        int temp = selecionar_opcao(39, 10, k);
+        int temp = selecionar_opcao(39, 7, k);
         return arr[k];
     }
 }

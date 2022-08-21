@@ -27,13 +27,13 @@ void sequencial(int num, int vetor[]);
 
 int main()
 {
-    //srand(time(NULL));
+    // srand(time(NULL));
     darZoom(7);
 
-    #ifdef _WIN32
+#ifdef _WIN32
     system("chcp 65001");
     system("MODE con cols=80 lines=22");
-    #endif
+#endif
     clrscr();
 
     char tabuleiro[LINHAS][COLUNAS];
@@ -60,7 +60,7 @@ int main()
         criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
         criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO, true);
         numplayers = 2;
-        vezDe = 1;
+        vezDe = 2;
     }
     else if (mode == 3)
     {
@@ -70,7 +70,7 @@ int main()
         criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
         criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO, true);
         numplayers = 3;
-        vezDe = 0;
+        vezDe = 2;
     }
     else if (mode == 4)
     {
@@ -80,80 +80,84 @@ int main()
         criarJogador(players[AMARELO], "AMARELO", tabuleiro, AMARELO, true);
         criarJogador(players[VERMELHO], "VERMELHO", tabuleiro, VERMELHO, true);
         numplayers = 4;
-        vezDe = rand() % 4;
+        vezDe = 2;
     }
-
 
     printTabuleiro(tabuleiro);
 
     // LACOS DE PARTIDA
-    desenhar_quadrado(40, 20, 35, 0);
+    desenhar_quadrado(40, 17, 35, 0);
     while (1)
     {
         size_t size;
-        int * vetor = sortearDados(size);
+        int *vetor = sortearDados(size);
 
         bubble_n_sort(vetor, size, 0);
 
-        if(contarNum6(vetor, size) == 3)
+        if (contarNum6(vetor, size) == 3)
         {
             continue;
         }
 
-        for(int i = 0; i < size; i++)
+        for (int i = 0; i < size; i++)
         {
             textcolor(15);
-            desenhar_quadrado(40, 20, 35, 0);
+            desenhar_quadrado(40, 17, 35, 0);
+            desenhar_quadrado(74, 3, 1, 17);
 
-            gotoxy(42, 2);
+            //apenas exemplo
+            gotoxy(10, 18);
+            cout << "Tokens que ja finalizaram: 2    Tokens sobrepostos:   w-r-t";
+
+            gotoxy(42, 1);
             cout << "Vez de " << players[vezDe].nome;
-            viewvector(vetor, size, 40, 6);
+            desenhar_linha_horizontal(37, 2, 36);
+            viewvector(vetor, size, 39, 3);
 
+            gotoxy(39, 6);
+            cout << "Selecione o token: ";
             char temp = selecionartoken(players[vezDe], containSix(vetor, size));
-            desenhar_quadrado(40, 20, 35, 0);
+            // desenhar_quadrado(40, 20, 35, 0);
+            preencher_com_espacos(38, 10, 36, 5);
+            gotoxy(39, 6);
+            cout << "Selecione o numero: ";
             int dado = selecionarNumero(vetor, size, temp, players[vezDe]);
 
-            for(int i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
-                if(vetor[i] == dado)
+                if (vetor[i] == dado)
                 {
                     vetor[i] = 0;
                     break;
                 }
             }
-            
-            
+
             int r = andarCasas(tabuleiro, vetor[i], temp, players);
             vetor[i] = 0;
 
-            if(r == -2 || r == 1)
+            if (r == -2 || r == 1)
             {
                 int aux = i + 1;
                 size++;
-                vetor = (int*) realloc(vetor, size);
-                vetor[aux] = rand() % 6 + 1; 
+                vetor = (int *)realloc(vetor, size);
+                vetor[aux] = rand() % 6 + 1;
 
-                while(vetor[aux++] == 6)
+                while (vetor[aux++] == 6)
                 {
                     size++;
-                    vetor = (int*) realloc(vetor, size * sizeof(int));
-                    vetor[aux] = rand() % 6 + 1; 
+                    vetor = (int *)realloc(vetor, size * sizeof(int));
+                    vetor[aux] = rand() % 6 + 1;
                 }
-
             }
 
-            if(players[vezDe].pecasEmJogo == 0)
+            if (players[vezDe].pecasEmJogo == 0)
             {
                 cout << "VITORIA";
-                return 0;   
+                return 0;
             }
-
-            
         }
 
         vezDe = vezDoProximo(vezDe, players);
-
-        
     }
 
     printTabuleiro(tabuleiro);
@@ -183,12 +187,10 @@ void darZoom(int a)
 
 void posicionarCursorNoMeio()
 {
-
 }
 
 void darZoom(int a)
 {
-
 }
 
 #endif
