@@ -6,6 +6,7 @@
 #include <cctype>
 #include <time.h>
 
+#define DEBUG 0
 #define DELAY 0
 
 using namespace std;
@@ -92,8 +93,6 @@ int main()
         size_t size;
         int *vetor = sortearDados(size);
 
-        bubble_n_sort(vetor, size, 0);
-
         if (contarNum6(vetor, size) == 3)
         {
             continue;
@@ -119,9 +118,29 @@ int main()
             char temp = selecionartoken(players[vezDe], containSix(vetor, size));
             // desenhar_quadrado(40, 20, 35, 0);
             preencher_com_espacos(38, 10, 36, 5);
-            gotoxy(39, 6);
-            cout << "Selecione o numero: ";
-            int dado = selecionarNumero(vetor, size, temp, players[vezDe]);
+
+            int dado;
+
+            if(qtddDeNumeros(vetor,size) == 1)
+            {
+                for(int i = 0; i < size; i++)
+                {                     
+                    dado = vetor[i];
+                    if(dado != 0)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                gotoxy(39, 6);
+                cout << "Selecione o numero: ";
+                dado = selecionarNumero(vetor, size, temp, players[vezDe]);
+            }
+
+            
+            int r = andarCasas(tabuleiro, dado, temp, players);
 
             for (int i = 0; i < size; i++)
             {
@@ -132,22 +151,9 @@ int main()
                 }
             }
 
-            int r = andarCasas(tabuleiro, vetor[i], temp, players);
-            vetor[i] = 0;
-
             if (r == -2 || r == 1)
             {
-                int aux = i + 1;
-                size++;
-                vetor = (int *)realloc(vetor, size);
-                vetor[aux] = rand() % 6 + 1;
-
-                while (vetor[aux++] == 6)
-                {
-                    size++;
-                    vetor = (int *)realloc(vetor, size * sizeof(int));
-                    vetor[aux] = rand() % 6 + 1;
-                }
+                vetor = sortearDados(size, vetor);
             }
 
             if (players[vezDe].pecasEmJogo == 0)
@@ -158,6 +164,7 @@ int main()
         }
 
         vezDe = vezDoProximo(vezDe, players);
+        free(vetor);
     }
 
     printTabuleiro(tabuleiro);

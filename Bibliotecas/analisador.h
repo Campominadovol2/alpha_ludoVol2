@@ -21,6 +21,21 @@ int *sortearDados(size_t &size)
     return vetor;
 }
 
+int *sortearDados(size_t & size, int * vetor)
+{
+    int i = size;
+
+    do
+    {
+        size++;
+        vetor = (int*) realloc(vetor, sizeof(int) * size);
+        vetor[i] =  rand() % 6 + 1;;
+    } while (vetor[i++] == 6);
+
+    return vetor;
+
+}
+
 int contarNum6(int *vetor, size_t size)
 {
     int r = 0;
@@ -165,8 +180,8 @@ int selecionarNumero(int *vetor, int size, char l, Player p)
             }
         }
 
-        int temp = selecionar_opcao(39, 7, k);
-        return arr[k];
+        int temp = selecionar_opcao(39, 7, k) - 1;
+        return arr[temp];
     }
 
     else if (temp2 <= 6 && temp2 >= 0)
@@ -182,8 +197,8 @@ int selecionarNumero(int *vetor, int size, char l, Player p)
             }
         }
 
-        int temp = selecionar_opcao(39, 7, k);
-        return arr[k];
+        int temp = selecionar_opcao(39, 7, k) - 1;
+        return arr[temp];
     }
     else
     {
@@ -198,8 +213,25 @@ int selecionarNumero(int *vetor, int size, char l, Player p)
             }
         }
 
-        int temp = selecionar_opcao(39, 7, k);
-        return arr[k];
+        int temp = selecionar_opcao(39, 7, k) - 1;
+        return arr[temp];
     }
 }
+
+
+int qtddDeNumeros(int * vetor, int tam)
+{
+    int num = 0;
+
+    for(int i = 0; i < tam; i++)
+    {
+        if(vetor[i] != 0)
+        {
+            num++;
+        }
+    }
+
+    return num;
+}
+
 #endif

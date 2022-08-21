@@ -2,7 +2,7 @@
 #include <iostream>
 
 using namespace std;
-
+#if DEBUG
 int random_numbers()
 {
     random_device rd;   // non-deterministic generator
@@ -14,3 +14,5 @@ int random_numbers()
     }
     cout << endl;
 }
+
+#endif
