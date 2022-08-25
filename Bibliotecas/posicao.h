@@ -125,7 +125,37 @@ void atualizarSobreposicao(Player & p, char l)
         }
 
     }
+}
 
+bool sobreposta(Piece p, Piece p2[])
+{
+
+    for(int i = 0; i < 4; i++)
+    {
+        if(p2[i].letra != p.letra && p.letra != ' ' && p2[i].letra != ' ' && p2[i].letra != '-')
+        {
+            if(p2[i].coordenada == p.coordenada && p.estaNaPosicaoInicial == false)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+void atualizarSobreposicao(Player p[])
+{
+    for(int i = 0; i < 4; i++)
+    {
+        for(int j = 0; j < 4; j++)
+        {
+            if(p[i].vaiJogar)
+            {
+                p[i].piece[j].estaSobreposta = sobreposta(p[i].piece[j], p[0].piece) || sobreposta(p[i].piece[j], p[1].piece) || sobreposta(p[i].piece[j], p[2].piece) || sobreposta(p[i].piece[j], p[3].piece);
+            }
+        }
+    }
 }
 
 ///printa um quadrado nas posições X e Y
@@ -322,9 +352,7 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
         if(numDeCasas > temp)
             return 20;
 
-
     atualizarSobreposicao(players[player], letra);
-
 
     int coordenada, linha, coluna, novaLinha, novaColuna;
 

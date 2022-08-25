@@ -78,39 +78,62 @@ bool ehPossivelJogar(Player p, int dado)
     return false;
 }
 
-int tokensDisponiveis(Player p, int _pos_x, int __pos_y, char vetor[], bool cond)
+
+bool containSix(int *vetor, int tam)
+{
+    for (int i = 0; i < tam; i++)
+        if (vetor[i] == 6)
+            return true;
+
+    return false;
+}
+
+
+bool pecaEstaNaRetaFinalEPodeJogar(int * vetor, int size, Piece p)
+{
+    for(int i = 0; i < size; i++)
+    {
+        if(p.coordenada < p.coordenadaDeEntrada)
+            return false;
+        if(p.coordenadaFinal - p.coordenada >= vetor[i] && vetor[i] != 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+int tokensDisponiveis(Player p, int _pos_x, int __pos_y, char vetor[], int * vetorDados, int size)
 {
     int r = 0;
     for (int i = 0; i < 4; i++)
     {
         if (p.piece[i].letra != ' ')
         {
-            if (cond)
+            if(pecaEstaNaRetaFinalEPodeJogar(vetorDados, size, p.piece[i]))
             {
                 gotoxy(_pos_x, __pos_y++);
                 cout << "[" << p.piece[i].letra << "]";
                 vetor[r] = p.piece[i].letra;
                 r++;
             }
-            else
+            else if (containSix(vetorDados, size) && p.piece[i].estaNaPosicaoInicial)
             {
-                if (!p.piece[i].estaNaPosicaoInicial)
-                {
-                    gotoxy(_pos_x, __pos_y++);
-                    cout << "[" << p.piece[i].letra << "]";
-                    vetor[r] = p.piece[i].letra;
-                    r++;
-                }
+                gotoxy(_pos_x, __pos_y++);
+                cout << "[" << p.piece[i].letra << "]";
+                vetor[r] = p.piece[i].letra;
+                r++;
             }
         }
     }
 
     return r;
 }
-char selecionartoken(Player p, bool cond)
+
+char selecionartoken(Player p, int * vetor, int size)
 {
     char tokensdisp[4];
-    int quantidade = tokensDisponiveis(p, 40, 7, tokensdisp, cond);
+    int quantidade = tokensDisponiveis(p, 40, 7, tokensdisp, vetor, size);
     int numescolha = selecionar_opcao(37, 7, quantidade);
 
     return tokensdisp[numescolha - 1];
@@ -148,15 +171,6 @@ void bubble_n_sort(int *vetor, int tam, int startFromIndex)
             }
         }
     }
-}
-
-bool containSix(int *vetor, int tam)
-{
-    for (int i = 0; i < tam; i++)
-        if (vetor[i] == 6)
-            return true;
-
-    return false;
 }
 
 int selecionarNumero(int *vetor, int size, char l, Player p)

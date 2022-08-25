@@ -38,6 +38,8 @@ typedef struct
 
     ///verifica se 2 peças da mesma cor estão na mesma casa
     bool ehTorre;
+    ///verifica se 2 peças de cores diferentes estão na mesma casa 
+    bool estaSobreposta;
     ///Cor da peça com base no enum
     Cor cor;
     ///Letra que representa a peça
@@ -226,7 +228,8 @@ void criarJogador(Player & p, const char * nome, char tabuleiro[LINHAS][COLUNAS]
 
     for(int j = 0; j < 4; j++)
     {
-           p.piece[j].ehTorre = 0;
+           p.piece[j].ehTorre = false;
+           p.piece[j].estaSobreposta = false;
            p.piece[j].cor = (Cor) pn;
            p.piece[j].coordenada = -1;
 
