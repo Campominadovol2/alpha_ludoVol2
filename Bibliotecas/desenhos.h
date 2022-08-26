@@ -4,11 +4,20 @@
 #ifndef __DESENHOS_H
 #define __DESENHOS_H
 
+
+
+
+
+#ifdef _WIN32
 #define KEY_UP 72
 #define KEY_DOWN 80
-#define KEY_ESC 27
 #define KEY_ENTER 13
-
+#define KEY_ESC 27
+#else
+#define KEY_ENTER '\n'
+#define KEY_UP 'w'
+#define KEY_DOWN 's'
+#endif
 // Compilação condicional para ter comportamentos diferentes de acordo com o compilador
 // Nesse caso, MINGW, Clang e GCC
 #ifdef _WIN32
@@ -71,7 +80,7 @@ int selecionar_opcao(int x, int y, int num_de_opcoes)
         up_or_down = getch();
         switch (up_or_down)
         {
-
+            
         case KEY_UP:
             // se a seta estiver em cima, não é possível subir
             if (opcao > 1)

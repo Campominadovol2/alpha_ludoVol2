@@ -7,7 +7,7 @@
 #include <time.h>
 
 #define DEBUG 0
-#define DELAY 0
+#define DELAY 100
 
 using namespace std;
 
@@ -40,18 +40,16 @@ int COR_LETRA = WHITE;
 
 int main()
 {
-    // srand(time(NULL));
-    darZoom(7);
+    srand(time(NULL));
+
 
 #ifdef _WIN32
+    darZoom(7);
     system("chcp 65001");
     system("MODE con cols=80 lines=22");
 #endif
     clrscr();
-
     while(menuInicial() == 1);
-
-
 }
 
 int menuInicial()
@@ -242,79 +240,104 @@ int iniciarJogo(int mode)
         size_t size;
         int *vetor = sortearDados(size);
 
-        if (contarNum6(vetor, size) == 3)
+        if (contarNum6(vetor, size) < 3)
         {
-            continue;
-        }
-
-        for (int i = 0; i < size; i++)
-        {
-            textcolor(15);
-            desenhar_quadrado(40, 17, 35, 0);
-            desenhar_quadrado(74, 3, 1, 17);
-
-            // apenas exemplo
-            gotoxy(10, 18);
-            cout << "Tokens que ja finalizaram: 2    Tokens sobrepostos: ";
-
-            
-
-
-            atualizarSobreposicao(players);
-
-
-
-            gotoxy(42, 1);
-            cout << "Vez de " << players[vezDe].nome;
-            desenhar_linha_horizontal(37, 2, 36);
-            viewvector(vetor, size, 39, 3);
-
-            gotoxy(39, 6);
-            cout << "Selecione o token: ";
-            char temp = selecionartoken(players[vezDe], vetor, size);
-            // desenhar_quadrado(40, 20, 35, 0);
-            preencher_com_espacos(38, 10, 36, 5);
-
-            int dado;
-
-            if (qtddDeNumeros(vetor, size) == 1)
+            for (int i = 0; i < size; i++)
             {
+                textcolor(15);
+                desenhar_quadrado(40, 17, 35, 0);
+                desenhar_quadrado(74, 3, 1, 17);
+
+                // apenas exemplo
+                gotoxy(10, 18);
+                int tokenFinal = 0;
+
+                for(int i = 0; i < 4; i++)
+                {
+                    if(players[i].vaiJogar)
+                    {
+                        tokenFinal += 4 - players[i].pecasEmJogo;
+                    }
+                }
+                cout << "Tokens que ja finalizaram: " << tokenFinal <<" Tokens sobrepostos: ";
+                gotoxy(3, 20);
+                cout << vezDe;
+
+
+                atualizarSobreposicao(players);
+
+                for(int i = 0; i < 4; i++)
+                {
+                    for(int j = 0; j < 4; j++)
+                    {
+                        if(players[i].piece[j].estaSobreposta)
+                        {
+                            cout << players[i].piece[j].letra << " ";
+                        }
+                    }
+                }
+
+                gotoxy(42, 1);
+                cout << "Vez de " << players[vezDe].nome;
+                desenhar_linha_horizontal(37, 2, 36);
+                viewvector(vetor, size, 39, 3);
+
+                gotoxy(39, 6);
+                cout << "Selecione o token: ";
+                char temp = selecionartoken(players[vezDe], vetor, size);
+
+
+
+                if(temp == ' ')
+                {
+                    break;;
+                }
+                
+                // desenhar_quadrado(40, 20, 35, 0);
+                preencher_com_espacos(38, 10, 36, 5);
+
+                int dado;
+
+                if (qtddDeNumeros(vetor, size) == 1)
+                {
+                    for (int i = 0; i < size; i++)
+                    {
+                        dado = vetor[i];
+                        if (dado != 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    gotoxy(39, 6);
+                    cout << "Selecione o numero: ";
+                    dado = selecionarNumero(vetor, size, temp, players[vezDe]);
+                }
+
+                int r = andarCasas(tabuleiro, dado, temp, players);
+
                 for (int i = 0; i < size; i++)
                 {
-                    dado = vetor[i];
-                    if (dado != 0)
+                    if (vetor[i] == dado)
                     {
+                        vetor[i] = 0;
                         break;
                     }
                 }
-            }
-            else
-            {
-                gotoxy(39, 6);
-                cout << "Selecione o numero: ";
-                dado = selecionarNumero(vetor, size, temp, players[vezDe]);
-            }
 
-            int r = andarCasas(tabuleiro, dado, temp, players);
-
-            for (int i = 0; i < size; i++)
-            {
-                if (vetor[i] == dado)
+                if (r == -2 || r == 1)
                 {
-                    vetor[i] = 0;
-                    break;
+                    vetor = sortearDados(size, vetor);
                 }
-            }
 
-            if (r == -2 || r == 1)
-            {
-                vetor = sortearDados(size, vetor);
-            }
-
-            if (players[vezDe].pecasEmJogo == 0)
-            {
-                cout << "VITORIA";
-                return 0;
+                if (players[vezDe].pecasEmJogo == 0)
+                {
+                    getch();
+                    cout << "VITORIA";
+                    return 0;
+                }
             }
         }
 
@@ -399,8 +422,7 @@ int vezDoProximo(int vezAtual, Player p[])
                 return i;
         }
     }
-
-    return -1;
+    return VERMELHO;
 }
 
 void sequencial(int num, int vetor[])

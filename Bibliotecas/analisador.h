@@ -50,34 +50,6 @@ int contarNum6(int *vetor, size_t size)
     return r;
 }
 
-bool ehPossivelJogar(Player p, int dado)
-{
-
-    for (int i = 0; i < 4; i++)
-    {
-        if (p.piece[i].letra != ' ' && !p.piece[i].estaNaPosicaoInicial && p.piece[i].coordenada < 52)
-            return true;
-    }
-
-    for (int i = 0; i < 4; i++)
-    {
-        if (p.piece[i].letra != ' ')
-            if (p.piece[i].coordenada + dado <= p.piece[i].coordenadaFinal)
-                return true;
-    }
-
-    if (dado == 6)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            if (p.piece[i].letra != ' ' && p.piece[i].estaNaPosicaoInicial)
-                return true;
-        }
-    }
-
-    return false;
-}
-
 
 bool containSix(int *vetor, int tam)
 {
@@ -91,11 +63,13 @@ bool containSix(int *vetor, int tam)
 
 bool pecaEstaNaRetaFinalEPodeJogar(int * vetor, int size, Piece p)
 {
+    if(p.coordenada >= 0 && p.coordenada <= 52)
+        return true;
+
     for(int i = 0; i < size; i++)
     {
-        if(p.coordenada < p.coordenadaDeEntrada)
-            return false;
-        if(p.coordenadaFinal - p.coordenada >= vetor[i] && vetor[i] != 0)
+
+        if(p.coordenadaFinal - p.coordenada >= vetor[i] && vetor[i] != 0 && !p.estaNaPosicaoInicial)
         {
             return true;
         }
@@ -110,20 +84,21 @@ int tokensDisponiveis(Player p, int _pos_x, int __pos_y, char vetor[], int * vet
     {
         if (p.piece[i].letra != ' ')
         {
-            if(pecaEstaNaRetaFinalEPodeJogar(vetorDados, size, p.piece[i]))
+            if (containSix(vetorDados, size) && p.piece[i].estaNaPosicaoInicial)
             {
                 gotoxy(_pos_x, __pos_y++);
                 cout << "[" << p.piece[i].letra << "]";
                 vetor[r] = p.piece[i].letra;
                 r++;
             }
-            else if (containSix(vetorDados, size) && p.piece[i].estaNaPosicaoInicial)
+            else if(pecaEstaNaRetaFinalEPodeJogar(vetorDados, size, p.piece[i]))
             {
                 gotoxy(_pos_x, __pos_y++);
                 cout << "[" << p.piece[i].letra << "]";
                 vetor[r] = p.piece[i].letra;
                 r++;
             }
+            
         }
     }
 
@@ -134,7 +109,21 @@ char selecionartoken(Player p, int * vetor, int size)
 {
     char tokensdisp[4];
     int quantidade = tokensDisponiveis(p, 40, 7, tokensdisp, vetor, size);
-    int numescolha = selecionar_opcao(37, 7, quantidade);
+    
+    int numescolha;
+
+    if(quantidade > 1)
+    {
+        numescolha = selecionar_opcao(37, 7, quantidade);
+    }
+    else if(quantidade == 1)
+    {
+        numescolha = 1;
+    }
+    else
+    {
+        return ' ';
+    }
 
     return tokensdisp[numescolha - 1];
 }

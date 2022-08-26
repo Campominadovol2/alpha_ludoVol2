@@ -232,6 +232,7 @@ bool ehCasaEspecial(Player p[], int casa)
 static int atualizarPosicao(int linha, int coluna, int newLinha, int newColuna, char tabuleiro[LINHAS][COLUNAS], Player players[], bool ehUltimaVolta)
 {
     int resultado = 0;
+    fflush(stdout);
 
     char temp = tabuleiro[linha][coluna];
     int p = getPlayer(temp);
