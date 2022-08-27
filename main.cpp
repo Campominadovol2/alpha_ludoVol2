@@ -74,9 +74,9 @@ int menuInicial2()
 {
     logo();
     gotoxy(x, 11);
-    printf("  Jogar");
+    printf("  Iniciar partida");
     gotoxy(x, 12);
-    printf("  Tutorial");
+    printf("  Sobre o jogo");
     gotoxy(x, 13);
     printf("  Retroceder");
     int opc = selecionar_opcao(27, 11, 3);
