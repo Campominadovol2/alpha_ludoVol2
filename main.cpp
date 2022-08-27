@@ -19,12 +19,9 @@ using namespace std;
 #include "./Bibliotecas/analisador.h"
 #include "./Bibliotecas/desenhos.h"
 
-int pecasNoInicio(Player p);
-
 void posicionarCursorNoMeio();
 void darZoom(int a);
 int vezDoProximo(int vezAtual, Player p[]);
-void sequencial(int num, int vetor[]);
 int iniciarJogo(int mode);
 
 void logo();
@@ -32,6 +29,8 @@ int menuInicial();
 int menuInicial2();
 int menuDeAjuda();
 int selecionarNumDePlayers();
+void viewinformation(int op);
+void winner(int numplayer);
 
 const int x = 27;
 
@@ -42,21 +41,21 @@ int main()
 {
     srand(time(NULL));
 
-
 #ifdef _WIN32
     darZoom(7);
     system("chcp 65001");
     system("MODE con cols=80 lines=22");
 #endif
     clrscr();
-    while(menuInicial() == 1);
+    while (menuInicial() == 1)
+        ;
 }
 
 int menuInicial()
 {
     logo();
     gotoxy(x, 11);
-    printf("  Iniciar ludo");
+    printf("  Entrar");
     gotoxy(x, 12);
     printf("  Encerrar");
     int opc = selecionar_opcao(27, 11, 2);
@@ -87,7 +86,7 @@ int menuInicial2()
     {
     case 1:
         i = selecionarNumDePlayers();
-        if(i == 4)
+        if (i == 4)
         {
             return menuInicial2();
         }
@@ -118,50 +117,41 @@ int selecionarNumDePlayers()
 
 int menuDeAjuda()
 {
-    printf("  Dicas e ajuda");
-    gotoxy(x, 12);
-    printf("  Regras");
-    gotoxy(x, 13);
-    printf("  Retroceder");
-    int opc = selecionar_opcao(27, 11, 3);
-
-    switch (opc)
+    int posx;
+    desenhar_quadrado(80, 22, 0, 0);
+    gotoxy(27, 1);
+    printf("Informações sobre o jogo");
+    gotoxy(27, 20);
+    printf("Pressione enter para sair.");
+    desenhar_quadrado(78, 18, 1, 2);
+    int opcao = 1;
+    char direction;
+    viewinformation(opcao);
+    do
     {
-    case 1:
-        clrscr();
-        logo();
-        gotoxy(x - 10, 11);
-        printf("  Apos o primeiro sorteio seja sorteado 3 vezes ");
-        gotoxy(x - 10, 12);
-        printf("  o numero 6 perde-se a vez.");
-        gotoxy(x - 10, 13);
-        printf("  Vence o jogo quem por 4 tokiens na casa primeiro.");
-        gotoxy(x - 10, 14);
-        printf("  Retroceder");
-        gotoxy(x, 15);
-        break;
-    case 2:
-        clrscr();
-        logo();
-        gotoxy(x - 10, 11);
-        printf("  1 - 6 e o unico numero capaz de tirar um tokien da casa.");
-        gotoxy(x - 10, 12);
-        printf("  2 - ");
-        gotoxy(x - 10, 13);
-        printf("  3 - ");
-        gotoxy(x - 10, 14);
-        printf("  Retroceder");
-        gotoxy(x, 15);
-        break;
-    case 3:
-        return menuInicial2();
-    }
+        direction = getch();
+        switch (direction)
+        {
+        case 'a':
+            if (opcao > 1)
+            {
+                opcao--;
+            }
+            viewinformation(opcao);
+            break;
 
-    getch();
-
-    return menuDeAjuda();
+        case 'd':
+            if (opcao < 2)
+            {
+                opcao++;
+            }
+            viewinformation(opcao);
+            break;
+        case 'f':
+            return menuInicial2();
+        }
+    } while (1);
 }
-
 
 void logo()
 {
@@ -186,7 +176,7 @@ void logo()
 }
 
 int iniciarJogo(int mode)
-{   
+{
     clrscr();
 
     char tabuleiro[LINHAS][COLUNAS];
@@ -249,28 +239,27 @@ int iniciarJogo(int mode)
                 desenhar_quadrado(74, 3, 1, 17);
 
                 // apenas exemplo
-                gotoxy(10, 18);
+                gotoxy(4, 18);
                 int tokenFinal = 0;
 
-                for(int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++)
                 {
-                    if(players[i].vaiJogar)
+                    if (players[i].vaiJogar)
                     {
                         tokenFinal += 4 - players[i].pecasEmJogo;
                     }
                 }
-                cout << "Tokens que ja finalizaram: " << tokenFinal <<" Tokens sobrepostos: ";
+                cout << "Tokens que ja finalizaram: " << tokenFinal << "     Tokens sobrepostas: ";
                 gotoxy(3, 20);
                 cout << vezDe;
 
-
                 atualizarSobreposicao(players);
 
-                for(int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++)
                 {
-                    for(int j = 0; j < 4; j++)
+                    for (int j = 0; j < 4; j++)
                     {
-                        if(players[i].piece[j].estaSobreposta)
+                        if (players[i].piece[j].estaSobreposta)
                         {
                             cout << players[i].piece[j].letra << " ";
                         }
@@ -286,13 +275,12 @@ int iniciarJogo(int mode)
                 cout << "Selecione o token: ";
                 char temp = selecionartoken(players[vezDe], vetor, size);
 
-
-
-                if(temp == ' ')
+                if (temp == ' ')
                 {
-                    break;;
+                    break;
+                    ;
                 }
-                
+
                 // desenhar_quadrado(40, 20, 35, 0);
                 preencher_com_espacos(38, 10, 36, 5);
 
@@ -334,8 +322,7 @@ int iniciarJogo(int mode)
 
                 if (players[vezDe].pecasEmJogo == 0)
                 {
-                    getch();
-                    cout << "VITORIA";
+                    winner(vezDe);
                     return 0;
                 }
             }
@@ -348,6 +335,129 @@ int iniciarJogo(int mode)
     printTabuleiro(tabuleiro);
 
     return 0;
+}
+
+void viewinformation(int op)
+{
+    int posx = 4, posy = 4;
+    preencher_com_espacos(76, 16, 2, 3);
+    switch (op)
+    {
+    case 1:
+        gotoxy(posx, posy++);
+        printf("1- O jogador tem direito a três sorteios de dados no início de toda");
+        gotoxy(posx, posy++);
+        printf("   jogada e só consegue tirar seu token da casa apenas quando cair algum");
+        gotoxy(posx, posy++);
+        printf("   número 6, mas se o 6 cair três vezes ele perde a vez.");
+        gotoxy(posx, posy + 1);
+        printf("2- O vencedor será o jogador que conseguir levar seus 4 tokens até o fim.");
+        gotoxy(posx, posy + 3);
+        printf("3- Dois ou mais tokens simples do mesmo jogador formam uma torre se");
+        gotoxy(posx, posy + 4);
+        printf("   estiverem sobrepostos.");
+        gotoxy(2, 18);
+        printf("██████████████████████████████████████");
+        gotoxy(55, 18);
+        printf("Próximo >");
+        gotoxy(52, 20);
+        break;
+    case 2:
+        gotoxy(posx, posy++);
+        printf("4- Se você sobrepor um token único do adversário e ele não estiver na casa");
+        gotoxy(posx, posy++);
+        printf("   de saída ou posição X, ele será movido para a casa inicial e tu terás");
+        gotoxy(posx, posy++);
+        printf("   direito a mais um sorteio de dados, dessa vez não há restrição da ");
+        gotoxy(posx, posy++);
+        printf("   quantidade de números 6.");
+        gotoxy(posx, posy + 7);
+        printf("Analíse cada jogada com sabedoria e tenha um bom jogo!");
+        gotoxy(40, 18);
+        printf("██████████████████████████████████████");
+        gotoxy(15, 18);
+        printf("< Anterior");
+        gotoxy(52, 20);
+        break;
+    case 4:
+        break;
+    }
+    return;
+}
+
+void winner(int numplayer)
+{
+    int posx = 16, posy = 6, posx2 = posx + 42, posy2 = posy + 4;
+    preencher_com_espacos(78, 20, 1, 1);
+    desenhar_linha_horizontal(posx - 3, posy - 1, 55);
+    desenhar_linha_horizontal(posx - 3, posy + 8, 55);
+    gotoxy(posx + 12, posy + 9);
+    cout << "Pressione alguma tecla...";
+    gotoxy(posx, posy++);
+    printf(" _____   __   _____   _____   _____   __   _____ ");
+    gotoxy(posx, posy++);
+    printf("|  |  | |  | |_   _| |     | | __  | |  | |  _  |");
+    gotoxy(posx, posy++);
+    printf("|  |  | |--|   | |   |  |  | |    -| |--| |     |");
+    gotoxy(posx, posy++);
+    printf(" \\___/  |__|   |_|   |_____| |__|__| |__| |__|__|  ");
+    gotoxy(posx, posy++);
+    printf(" _____  __     _____  __ __  _____  _____");
+    gotoxy(posx, posy++);
+    printf("|  _  ||  |   |  _  ||  |  ||   __|| __  |");
+    gotoxy(posx, posy++);
+    printf("|   __||  |__ |     ||_   _||   __||    -|");
+    gotoxy(posx, posy++);
+    printf("|__|   |_____||__|__|  |_| ||_____||__|__|");
+    switch (numplayer)
+    {
+    case 1:
+        gotoxy(posx2, posy2++);
+        printf(" ___");
+        gotoxy(posx2, posy2++);
+        printf("|_  |");
+        gotoxy(posx2, posy2++);
+        printf(" _| |_");
+        gotoxy(posx2, posy2++);
+        printf("|_____|");
+        break;
+    case 2:
+        gotoxy(posx2, posy2++);
+        printf("  ____");
+        gotoxy(posx2, posy2++);
+        printf(" |__  |");
+        gotoxy(posx2, posy2++);
+        printf(" |  __|");
+        gotoxy(posx2, posy2++);
+        printf(" |____|");
+        break;
+    case 3:
+        gotoxy(posx2, posy2++);
+        printf("  ____");
+        gotoxy(posx2, posy2++);
+        printf(" |__  |");
+        gotoxy(posx2, posy2++);
+        printf(" |__  |");
+        gotoxy(posx2, posy2++);
+        printf(" |____|");
+        break;
+    case 4:
+        gotoxy(posx2, posy2++);
+        printf(" _____");
+        gotoxy(posx2, posy2++);
+        printf("|  |  |");
+        gotoxy(posx2, posy2++);
+        printf("|__   |");
+        gotoxy(posx2, posy2++);
+        printf("   |__|");
+        break;
+
+    default:
+        break;
+    }
+    gotoxy(posx+36, posy);
+    getch();
+    return;
 }
 
 #ifdef _WIN32
@@ -379,17 +489,6 @@ void darZoom(int a)
 }
 
 #endif
-
-int pecasNoInicio(Player p)
-{
-    int temp = 0;
-    for (int i = 0; i < 4; i++)
-    {
-        if (p.piece[i].estaNaPosicaoInicial)
-            temp++;
-    }
-    return temp;
-}
 
 int vezDoProximo(int vezAtual, Player p[])
 {
@@ -423,26 +522,4 @@ int vezDoProximo(int vezAtual, Player p[])
         }
     }
     return VERMELHO;
-}
-
-void sequencial(int num, int vetor[])
-{
-    if (num == 2)
-    {
-        vetor[0] = 2;
-        vetor[1] = 1;
-    }
-    else if (num == 3)
-    {
-        vetor[0] = 2;
-        vetor[1] = 0;
-        vetor[2] = 1;
-    }
-    else
-    {
-        vetor[0] = 2;
-        vetor[1] = 0;
-        vetor[2] = 1;
-        vetor[3] = 3;
-    }
 }

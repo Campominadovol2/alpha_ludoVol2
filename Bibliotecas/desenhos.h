@@ -4,10 +4,6 @@
 #ifndef __DESENHOS_H
 #define __DESENHOS_H
 
-
-
-
-
 #ifdef _WIN32
 #define KEY_UP 72
 #define KEY_DOWN 80
@@ -80,7 +76,7 @@ int selecionar_opcao(int x, int y, int num_de_opcoes)
         up_or_down = getch();
         switch (up_or_down)
         {
-            
+
         case KEY_UP:
             // se a seta estiver em cima, não é possível subir
             if (opcao > 1)
@@ -110,7 +106,6 @@ int selecionar_opcao(int x, int y, int num_de_opcoes)
         case KEY_ENTER:
             // Retorna o valor de opção
             return opcao;
-
         }
     } while (1);
 }
@@ -209,7 +204,7 @@ void preencher_com_espacos(int largura, int altura, int pos_x, int pos_y)
     Funcionalidade: Desenhará bordas na posiçao pos_x e pos_y e vai estender até altura e largura
     Logo depois, esse espaço interno será preenchido
     */
-   
+
 void desenhar_quadrado(int largura, int altura, int pos_x, int pos_y)
 {
     gotoxy(pos_x, pos_y);
