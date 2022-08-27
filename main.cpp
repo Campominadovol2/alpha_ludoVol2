@@ -326,7 +326,7 @@ int iniciarJogo(int mode)
                 }
                 else
                 {
-                   cout << "Peça " << temp << " anda " << dado << " casas...";
+                   cout << "Peça " << temp << " anda " << dado << " casa(s)...";
                 }
 
                 getch();

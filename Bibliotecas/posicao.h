@@ -104,7 +104,7 @@ char getLetra(Player p, int posicao)
 
 ///Recebe o jogador e uma letra e retorna a letra que está na mesma casa que char l
 ///Caso não tenha, retorna um espaço em branco
-void atualizarSobreposicao(Player & p, char l)
+void atualizarSobreposicao(Player & p)
 {
 
     for(int i = 0; i < 4; i++)
@@ -353,7 +353,7 @@ int andarCasas(char tabuleiro[LINHAS][COLUNAS], int numDeCasas, char letra, Play
         if(numDeCasas > temp)
             return 20;
 
-    atualizarSobreposicao(players[player], letra);
+    atualizarSobreposicao(players[player]);
 
     int coordenada, linha, coluna, novaLinha, novaColuna;
 

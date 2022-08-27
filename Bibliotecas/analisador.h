@@ -162,24 +162,13 @@ int selecionarNumero(int *vetor, int size, char l, Player p)
     int pos = posicaoPeca(p, l);
     int temp2 = p.piece[pos].coordenadaFinal - p.piece[pos].coordenada;
 
-    if (p.piece[posicaoPeca(p, l)].estaNaPosicaoInicial)
+    if(p.piece[pos].estaNaPosicaoInicial)   
     {
-        for (int i = 0; i < size; i++)
-        {
-            if (vetor[i] == 6)
-            {
-                gotoxy(x, y++);
-                printf("[%d]", vetor[i]);
-                arr[k] = 6;
-                k++;
-            }
-        }
-
-        int temp = selecionar_opcao(39, 7, k) - 1;
-        return arr[temp];
+        return 6;
     }
 
-    else if (temp2 <= 6 && temp2 >= 0)
+
+    if (temp2 <= 6 && temp2 >= 0)
     {
         for (int i = 0; i < size; i++)
         {
@@ -191,9 +180,6 @@ int selecionarNumero(int *vetor, int size, char l, Player p)
                 k++;
             }
         }
-
-        int temp = selecionar_opcao(39, 7, k) - 1;
-        return arr[temp];
     }
     else
     {
@@ -207,10 +193,20 @@ int selecionarNumero(int *vetor, int size, char l, Player p)
                 k++;
             }
         }
-
-        int temp = selecionar_opcao(39, 7, k) - 1;
-        return arr[temp];
     }
+
+    if(k == 0)
+    {
+        return 0;
+    }
+    if(k == 1)
+    {
+        return arr[0];
+    }
+
+
+    int temp = selecionar_opcao(39, 7, k) - 1;
+    return arr[temp];
 }
 
 
