@@ -46,9 +46,14 @@ int main()
 #endif
     clrscr();
     logo();
+    
+    #ifdef _WIN32
     gotoxy(9, 16);
     printf("Use as setas direcionais para navegar e ENTER para confirmar");
-
+    #else
+    gotoxy(13, 16);
+    printf("Use W, A, S e D para navegar e ENTER para confirmar");
+    #endif
     gotoxy(18, 17);
     pausa();
 
