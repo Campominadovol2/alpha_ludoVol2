@@ -6,8 +6,7 @@
 #include <cctype>
 #include <time.h>
 
-#define DEBUG 0
-#define DELAY 100
+#define DELAY 150
 
 using namespace std;
 
@@ -15,7 +14,6 @@ using namespace std;
 #include "./Bibliotecas/posicao.h"
 #include "./Bibliotecas/jogo.h"
 #include "./Bibliotecas/auxiliares.h"
-#include "./Bibliotecas/random.h"
 #include "./Bibliotecas/analisador.h"
 #include "./Bibliotecas/desenhos.h"
 
@@ -47,8 +45,15 @@ int main()
     system("MODE con cols=80 lines=22");
 #endif
     clrscr();
-    while (menuInicial() == 1)
-        ;
+    logo();
+    gotoxy(9, 16);
+    printf("Use as setas direcionais para navegar e ENTER para confirmar");
+
+    gotoxy(18, 17);
+    pausa();
+
+    while (menuInicial());
+    return 0;
 }
 
 int menuInicial()
@@ -58,6 +63,7 @@ int menuInicial()
     printf("  Entrar");
     gotoxy(x, 12);
     printf("  Encerrar");
+
     int opc = selecionar_opcao(27, 11, 2);
 
     switch (opc)
@@ -132,7 +138,7 @@ int menuDeAjuda()
         direction = getch();
         switch (direction)
         {
-        case 'a':
+        case KEY_LEFT:
             if (opcao > 1)
             {
                 opcao--;
@@ -140,14 +146,14 @@ int menuDeAjuda()
             viewinformation(opcao);
             break;
 
-        case 'd':
+        case KEY_RIGHT:
             if (opcao < 2)
             {
                 opcao++;
             }
             viewinformation(opcao);
             break;
-        case 'f':
+        case KEY_ENTER:
             return menuInicial2();
         }
     } while (1);
@@ -249,10 +255,8 @@ int iniciarJogo(int mode)
                         tokenFinal += 4 - players[i].pecasEmJogo;
                     }
                 }
-                cout << "Tokens que ja finalizaram: " << tokenFinal << "     Tokens sobrepostas: ";
-                gotoxy(3, 20);
-                cout << vezDe;
-
+                cout << "Tokens que ja finalizaram: " << tokenFinal << " Sobreposições: ";
+                
                 atualizarSobreposicao(players);
 
                 for (int i = 0; i < 4; i++)
@@ -271,14 +275,20 @@ int iniciarJogo(int mode)
                 desenhar_linha_horizontal(37, 2, 36);
                 viewvector(vetor, size, 39, 3);
 
+                getch();
+
                 gotoxy(39, 6);
                 cout << "Selecione o token: ";
                 char temp = selecionartoken(players[vezDe], vetor, size);
 
                 if (temp == ' ')
                 {
+                    gotoxy(39, 6);
+                    cout << "Sem possibilidades de jogo";
+                    gotoxy(39, 7);
+                    cout << "Perdeu a vez...";
+                    getch();
                     break;
-                    ;
                 }
 
                 // desenhar_quadrado(40, 20, 35, 0);
@@ -304,6 +314,17 @@ int iniciarJogo(int mode)
                     dado = selecionarNumero(vetor, size, temp, players[vezDe]);
                 }
 
+                gotoxy(39, 12);
+                if(players[vezDe].piece[posicaoPeca(players[vezDe], temp)].estaNaPosicaoInicial)
+                {
+                    cout << "Peça " << temp << " entra em jogo...";
+                }
+                else
+                {
+                   cout << "Peça " << temp << " anda " << dado << " casas...";
+                }
+
+                getch();
                 int r = andarCasas(tabuleiro, dado, temp, players);
 
                 for (int i = 0; i < size; i++)
@@ -315,11 +336,28 @@ int iniciarJogo(int mode)
                     }
                 }
 
+                textcolor(WHITE);
+
+                if(r == -2)
+                {
+                    gotoxy(39, 12);
+                    cout << "Removeu token do adversário";
+                }
+                else if(r == 1)
+                {
+                    gotoxy(39, 12);
+                    cout << "Um token chegou no final";
+
+                }
+               
                 if (r == -2 || r == 1)
                 {
+                    gotoxy(39, 13);
+                    cout << "Sorteando novos dados..."; 
                     vetor = sortearDados(size, vetor);
+                    getch();
                 }
-
+                
                 if (players[vezDe].pecasEmJogo == 0)
                 {
                     winner(vezDe);
@@ -387,6 +425,9 @@ void viewinformation(int op)
 
 void winner(int numplayer)
 {
+
+    textcolor(getColor((Cor) numplayer));
+    numplayer++;
     int posx = 16, posy = 6, posx2 = posx + 42, posy2 = posy + 4;
     preencher_com_espacos(78, 20, 1, 1);
     desenhar_linha_horizontal(posx - 3, posy - 1, 55);

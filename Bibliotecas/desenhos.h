@@ -8,11 +8,15 @@
 #define KEY_UP 72
 #define KEY_DOWN 80
 #define KEY_ENTER 13
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
 #define KEY_ESC 27
 #else
 #define KEY_ENTER '\n'
 #define KEY_UP 'w'
 #define KEY_DOWN 's'
+#define KEY_LEFT 'a'
+#define KEY_RIGHT 'd'
 #endif
 // Compilação condicional para ter comportamentos diferentes de acordo com o compilador
 // Nesse caso, MINGW, Clang e GCC
@@ -135,7 +139,7 @@ int selecionar_opcao_horizontal(int x, int y, int num_de_opcoes, int espacamento
         switch (direction)
         {
 
-        case 'a':
+        case KEY_LEFT:
             // se a seta estiver a esquerda máxima, não é possível subir
             if (opcao > 1)
             {
@@ -149,7 +153,7 @@ int selecionar_opcao_horizontal(int x, int y, int num_de_opcoes, int espacamento
             }
             break;
 
-        case 'd':
+        case KEY_RIGHT:
             // Se a seta estiver a direita máxima, não é possivel descer
             if (opcao < num_de_opcoes)
             {
@@ -161,7 +165,7 @@ int selecionar_opcao_horizontal(int x, int y, int num_de_opcoes, int espacamento
                 opcao++;
             }
             break;
-        case 'f':
+        case KEY_ENTER:
             // Retorna o valor de opção caso qualquer tecla seja digitada, exceto w e s
             return opcao;
         }

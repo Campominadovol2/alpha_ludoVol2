@@ -7,10 +7,12 @@ int *sortearDados(size_t &size)
 {
     size = 1;
     int i = 0;
+    //Alocar 1 espaço de memória pra int
     int *vetor = (int *)malloc(sizeof(int));
 
     vetor[i] = rand() % 6 + 1;
 
+    //Enquanto o número sorteado for 6, ele realloca esse espaço e adiciona outro número
     while (vetor[i++] == 6 && size <= 2)
     {
         size++;
@@ -21,6 +23,7 @@ int *sortearDados(size_t &size)
     return vetor;
 }
 
+//Faz basicamente a mesma coisa do sorteio anterior, a diferença é que esse array já foi alocando pelo menos uma vez
 int *sortearDados(size_t & size, int * vetor)
 {
     int i = size;
@@ -60,7 +63,7 @@ bool containSix(int *vetor, int tam)
     return false;
 }
 
-
+//Verifica se uma determinada peça pode jogar em pelo menos um dos resultados do valor do dado
 bool pecaEstaNaRetaFinalEPodeJogar(int * vetor, int size, Piece p)
 {
     if(p.coordenada >= 0 && p.coordenada <= 52)
@@ -77,6 +80,7 @@ bool pecaEstaNaRetaFinalEPodeJogar(int * vetor, int size, Piece p)
     return false;
 }
 
+// Percorre todas as peças de um determinado jogador e verifica se ele pode jogar em pelo menos uma casa do vetor e monta o menu de seleção 
 int tokensDisponiveis(Player p, int _pos_x, int __pos_y, char vetor[], int * vetorDados, int size)
 {
     int r = 0;
@@ -105,6 +109,7 @@ int tokensDisponiveis(Player p, int _pos_x, int __pos_y, char vetor[], int * vet
     return r;
 }
 
+//Menu de seleção de TOKEN
 char selecionartoken(Player p, int * vetor, int size)
 {
     char tokensdisp[4];
@@ -128,6 +133,8 @@ char selecionartoken(Player p, int * vetor, int size)
     return tokensdisp[numescolha - 1];
 }
 
+//Imprime os valores do dado
+
 void viewvector(int vetor[], int tam, int posx, int posy)
 {
     gotoxy(posx, posy);
@@ -144,24 +151,9 @@ void viewvector(int vetor[], int tam, int posx, int posy)
     }
 }
 
-void bubble_n_sort(int *vetor, int tam, int startFromIndex)
-{
-    // ordenacao em ordem decrescente
-    for (int i = startFromIndex; i < tam; i++)
-    {
-        for (int j = i + 1; j < tam; j++)
-        {
-            int temp = 0;
-            if (vetor[i] < vetor[j])
-            {
-                temp = vetor[i];
-                vetor[i] = vetor[j];
-                vetor[j] = temp;
-            }
-        }
-    }
-}
 
+
+//Pega o vetor de dados e uma peça e verifica em quais números aquela peça pode jogar
 int selecionarNumero(int *vetor, int size, char l, Player p)
 {
     int x = 40, y = 7;
@@ -222,6 +214,7 @@ int selecionarNumero(int *vetor, int size, char l, Player p)
 }
 
 
+//Retorna o tamanho "Lógico" do vetor, já que o número 0 é um item nulo
 int qtddDeNumeros(int * vetor, int tam)
 {
     int num = 0;
